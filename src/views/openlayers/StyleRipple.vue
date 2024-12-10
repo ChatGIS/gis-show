@@ -15,9 +15,9 @@ import RenderEvent from 'ol/render/Event'
 
 // 定义map
 const mapObj = {
-    // center: [117.024, 36.676],
-    center: [143.55, 39.50],
-    zoom: 6
+  // center: [117.024, 36.676],
+  center: [143.55, 39.50],
+  zoom: 6
 }
 let zoom = ref(0)
 let radiusRipple = 0
@@ -25,103 +25,103 @@ let opacityRipple = 1
 let widthRipple = 4
 var map = new Map({})
 onMounted(() => {
-    map = new Map({
-        // layers: [gaodeTileLayer, layerPoint],
-        layers: [gaodeTileLayer, layerTileRoadNetGaode],
-        target: 'map',
-        view: new View({
-            center: mapObj.center,
-            zoom: mapObj.zoom,
-            projection: 'EPSG:4326',
-        })
+  map = new Map({
+    // layers: [gaodeTileLayer, layerPoint],
+    layers: [gaodeTileLayer, layerTileRoadNetGaode],
+    target: 'map',
+    view: new View({
+      center: mapObj.center,
+      zoom: mapObj.zoom,
+      projection: 'EPSG:4326',
     })
-    // 添加鼠标位置
-    // map.addControl(controlMousePosition)
-    // 获取地图层级
-    map.on('moveend', () => {
-        zoom.value = Math.round(map.getView().getZoom() as number)
-    })
-    // 水波效果1
-    // layerPoint.on('postrender', rippleFun1)
-    // 水波效果2
-    // rippleFun2()
+  })
+  // 添加鼠标位置
+  // map.addControl(controlMousePosition)
+  // 获取地图层级
+  map.on('moveend', () => {
+    zoom.value = Math.round(map.getView().getZoom() as number)
+  })
+  // 水波效果1
+  // layerPoint.on('postrender', rippleFun1)
+  // 水波效果2
+  // rippleFun2()
 
-    rippleFun3()
+  rippleFun3()
 })
 
 // 高德瓦片
 const gaodeTileLayer = new TileLayer({
-    source: new XYZ({
-        url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
-    })
+  source: new XYZ({
+    url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
+  })
 })
 // 高德路网瓦片图层
 const layerTileRoadNetGaode = new TileLayer({
-    source: new XYZ({
-        url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=8&x={x}&y={y}&z={z}'
-    })
+  source: new XYZ({
+    url: 'http://webst0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=8&x={x}&y={y}&z={z}'
+  })
 })
 // 点图层
 const featurePoint1 = new Feature({
-    geometry: new Point(mapObj.center)
+  geometry: new Point(mapObj.center)
 })
 const layerPoint = new Vector({
-    source: new VectorSource({
-        features: [featurePoint1]
-    })
+  source: new VectorSource({
+    features: [featurePoint1]
+  })
 })
 
 // 鼠标拾取位置坐标控件
 const controlMousePosition = new MousePosition({
-    coordinateFormat: createStringXY(6),
-    projection: 'EPSG:4326',
-    className: 'custom-mouse-position',
-    target: document.getElementById('mouse-position') as HTMLElement
+  coordinateFormat: createStringXY(6),
+  projection: 'EPSG:4326',
+  className: 'custom-mouse-position',
+  target: document.getElementById('mouse-position') as HTMLElement
 })
 
 // 水波扩散效果1
 const rippleFun1 = (evt: RenderEvent) => {
-    if(radiusRipple > 30) {
-        radiusRipple = 0
-        opacityRipple = 1
-        widthRipple = 5
-    }
-    let ctx = getVectorContext(evt)
-    ctx.setStyle(new Style({
-        image: new CircleStyle({
-            radius: radiusRipple,
-            stroke: new Stroke({
-                color: 'rgba(255, 0, 0, ' + opacityRipple + ')',
-                width: widthRipple,
-            }),
-        })
-    }))
-    ctx.drawGeometry(featurePoint1.getGeometry() as Geometry)
-    radiusRipple += 0.3
-    opacityRipple -= 1/150
-    widthRipple -= 4/100
-    // map.render()
-    layerPoint.changed()           
+  if(radiusRipple > 30) {
+    radiusRipple = 0
+    opacityRipple = 1
+    widthRipple = 5
+  }
+  let ctx = getVectorContext(evt)
+  ctx.setStyle(new Style({
+    image: new CircleStyle({
+      radius: radiusRipple,
+      stroke: new Stroke({
+        color: 'rgba(255, 0, 0, ' + opacityRipple + ')',
+        width: widthRipple,
+      }),
+    })
+  }))
+  ctx.drawGeometry(featurePoint1.getGeometry() as Geometry)
+  radiusRipple += 0.3
+  opacityRipple -= 1/150
+  widthRipple -= 4/100
+  // map.render()
+  layerPoint.changed()           
 }
 
 const rippleFun2 = () => {
-    const ele = document.getElementById('div1') as HTMLElement
-    const overlayPoint = new Overlay({
-        element: ele,
-        positioning: 'center-center'
-    })
-    overlayPoint.setPosition(mapObj.center)
-    map.addOverlay(overlayPoint)
+  const ele = document.getElementById('div1') as HTMLElement
+  const overlayPoint = new Overlay({
+    element: ele,
+    positioning: 'center-center'
+  })
+  overlayPoint.setPosition(mapObj.center)
+  map.addOverlay(overlayPoint)
 }
 
 const rippleFun3 = () => {
-    const ele = document.getElementById('div2') as HTMLElement
-    const overlayPoint = new Overlay({
-        element: ele,
-        positioning: 'center-center'
-    })
-    overlayPoint.setPosition(mapObj.center)
-    map.addOverlay(overlayPoint)
+  const ele = document.getElementById('div2') as HTMLElement
+  const overlayPoint = new Overlay({
+    element: ele,
+    positioning: 'center-center'
+  })
+  overlayPoint.setPosition(mapObj.center)
+  map.addOverlay(overlayPoint)
 }
 </script>
 

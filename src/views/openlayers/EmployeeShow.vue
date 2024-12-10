@@ -19,72 +19,72 @@ import Overlay from 'ol/Overlay'
 
 // 定义map
 const mapParams = {
-    center: [117.060907, 36.665866],
-    zoom: 12
+  center: [117.060907, 36.665866],
+  zoom: 12
 }
 let zoom = ref(0)
 let map = new Map({})
 let popup = new Overlay({})
 onMounted(() => {
-    map = new Map({
-        layers: [gaodeTileLayer, locateLayer],
-        target: 'map',
-        view: new View({
-            center: mapParams.center,
-            zoom: mapParams.zoom,
-            projection: 'EPSG:4326',
-        })
+  map = new Map({
+    layers: [gaodeTileLayer, locateLayer],
+    target: 'map',
+    view: new View({
+      center: mapParams.center,
+      zoom: mapParams.zoom,
+      projection: 'EPSG:4326',
     })
-    // 添加鼠标位置
-    map.addControl(controlMousePosition)
-    // 获取地图层级
-    map.on('moveend', () => {
-        zoom.value = Math.round(map.getView().getZoom() as number)
-    })
-    // 加载员工要素
-    initEmployeeData()
-    // 初始化弹框要素
-    initPopup()
-    // 点击拾取
-    map.on('singleclick', function (e) {
-        clickMap(e)
-    })
+  })
+  // 添加鼠标位置
+  map.addControl(controlMousePosition)
+  // 获取地图层级
+  map.on('moveend', () => {
+    zoom.value = Math.round(map.getView().getZoom() as number)
+  })
+  // 加载员工要素
+  initEmployeeData()
+  // 初始化弹框要素
+  initPopup()
+  // 点击拾取
+  map.on('singleclick', function (e) {
+    clickMap(e)
+  })
 })
 /* 
     地图图层
 */
 // 高德瓦片
 const gaodeTileLayer = new TileLayer({
-    source: new XYZ({
-        url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
-    })
+  source: new XYZ({
+    url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
+  })
 })
 // 定位图层
 const locateSource = new VectorSource({})
 const locateLayer = new VectorLayer({
-    source: locateSource,
+  source: locateSource,
 })
 // 办公楼图层
 const buildSource = new VectorSource({})
 const buildLayer = new VectorLayer({
-    source: buildSource,
+  source: buildSource,
 })
 /* 
     控件
 */
 // 鼠标拾取位置坐标控件
 const controlMousePosition = new MousePosition({
-    coordinateFormat: createStringXY(6),
-    projection: 'EPSG:4326',
-    className: 'custom-mouse-position',
-    target: document.getElementById('mouse-position') as HTMLElement
+  coordinateFormat: createStringXY(6),
+  projection: 'EPSG:4326',
+  className: 'custom-mouse-position',
+  target: document.getElementById('mouse-position') as HTMLElement
 })
 
 // 关闭弹框
 const closePopup = () => {
-    popup.setPosition(undefined)
-    // closer.blur()
-    return false
+  popup.setPosition(undefined)
+  // closer.blur()
+  return false
 }
 
 /* 
@@ -92,255 +92,255 @@ const closePopup = () => {
 */
 // 定位点样式
 const styleBuild = new Style({
-    image: new Icon({
-        src: getAssetsFile('building.png'),
-        size: [64, 64],
-        offset: [-17, -5]
-    }),
-    text: new Text({
-        text: '',
-        font: '15px sans-serif',
-        offsetX: -3,
-        offsetY: -32,
-        fill: new Fill({
-            color: 'red'
-        })
+  image: new Icon({
+    src: getAssetsFile('building.png'),
+    size: [64, 64],
+    offset: [-17, -5]
+  }),
+  text: new Text({
+    text: '',
+    font: '15px sans-serif',
+    offsetX: -3,
+    offsetY: -32,
+    fill: new Fill({
+      color: 'red'
     })
+  })
 })
 
 // 动态创建样式
 const createLabelStyle = (feature: any) => {
-    return new Style({
-        image: new Icon({
-            src: getAssetsFile('locate-red.png'),
-            size: [64, 64],
-            offset: [-17, -5]
-        }),
-        text: new Text({
-            text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
-            font: '15px sans-serif',
-            offsetX: 0,
-            offsetY: -32,
-            fill: new Fill({
-                color: 'black'
-            })
-        })
+  return new Style({
+    image: new Icon({
+      src: getAssetsFile('locate-red.png'),
+      size: [64, 64],
+      offset: [-17, -5]
+    }),
+    text: new Text({
+      text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
+      font: '15px sans-serif',
+      offsetX: 0,
+      offsetY: -32,
+      fill: new Fill({
+        color: 'black'
+      })
     })
+  })
 }
 // 根据年限动态创建样式
 const createLabelStyleWithYearLevel = (feature: any) => {
-    let colorFill = '#2ca4a4'
-    let radiusCircle = 7
-    if(feature.get('yearLevel') === 1) {
-        colorFill = '#0f1423'
-        radiusCircle = 10
-    } else if (feature.get('yearLevel') === 2) {
-        colorFill = '#15559a'
-        radiusCircle = 9
-    } else if (feature.get('yearLevel') === 3) {
-        colorFill = '#5698c3'
-        radiusCircle = 8
-    } else if (feature.get('yearLevel') === 4) {
-        colorFill = '#fa7e23'
-        radiusCircle = 7
-    } else if (feature.get('yearLevel') === 5) {
-        colorFill = '#de2a18'
-        radiusCircle = 6
-    } else if (feature.get('yearLevel') === 6) {
-        colorFill = '#08f417'
-        radiusCircle = 7
-    }
-    return new Style({
-        image: new Circle({
-            radius: radiusCircle,
-            fill: new Fill({
-                color: colorFill,
-            })
-        }),
-        fill: new Fill({
-            color: 'black',
-        }),
-        stroke: new Stroke({
-            color: 'white',
-            width: 2,
-        }),
-        text: new Text({
-            text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
-            font: '15px sans-serif',
-            offsetX: 0,
-            offsetY: 18,
-            fill: new Fill({
-                color: 'black'
-            })
-        })
+  let colorFill = '#2ca4a4'
+  let radiusCircle = 7
+  if(feature.get('yearLevel') === 1) {
+    colorFill = '#0f1423'
+    radiusCircle = 10
+  } else if (feature.get('yearLevel') === 2) {
+    colorFill = '#15559a'
+    radiusCircle = 9
+  } else if (feature.get('yearLevel') === 3) {
+    colorFill = '#5698c3'
+    radiusCircle = 8
+  } else if (feature.get('yearLevel') === 4) {
+    colorFill = '#fa7e23'
+    radiusCircle = 7
+  } else if (feature.get('yearLevel') === 5) {
+    colorFill = '#de2a18'
+    radiusCircle = 6
+  } else if (feature.get('yearLevel') === 6) {
+    colorFill = '#08f417'
+    radiusCircle = 7
+  }
+  return new Style({
+    image: new Circle({
+      radius: radiusCircle,
+      fill: new Fill({
+        color: colorFill,
+      })
+    }),
+    fill: new Fill({
+      color: 'black',
+    }),
+    stroke: new Stroke({
+      color: 'white',
+      width: 2,
+    }),
+    text: new Text({
+      text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
+      font: '15px sans-serif',
+      offsetX: 0,
+      offsetY: 18,
+      fill: new Fill({
+        color: 'black'
+      })
     })
+  })
 }
 
 // 根据距离动态创建样式
 const createLabelStyleWithDistance = (feature: any) => {
-    let colorFill = '#a01b0a'
-    let radiusCircle = 8
-    // const distancekilometer = feature.get('distance')/1000
-    const timeMin = feature.get('duration')/60
-    if(timeMin > 60) {
-        colorFill = '#a01b0a'
-        radiusCircle = 7.5
-    } else if (timeMin <= 60 && timeMin > 40) {
-        colorFill = '#b7584c'
-        radiusCircle = 7.5
-    } else if (timeMin <= 40 && timeMin > 30) {
-        colorFill = '#c69b02'
-        radiusCircle = 7
-    } else if (timeMin <= 30 && timeMin > 20) {
-        colorFill = '#e8c64f'
-        radiusCircle = 7
-    } else if (timeMin <= 20 && timeMin > 10) {
-        colorFill = '#459c50'
-        radiusCircle = 6.5
-    }else if (timeMin <= 10) {
-        colorFill = '#017410'
-        radiusCircle = 6.5
-    }
-    return new Style({
-        image: new Circle({
-            radius: radiusCircle,
-            fill: new Fill({
-                color: colorFill,
-            })
-        }),
-        fill: new Fill({
-            color: 'black',
-        }),
-        stroke: new Stroke({
-            color: 'white',
-            width: 2,
-        }),
-        text: new Text({
-            text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
-            font: '15px sans-serif',
-            offsetX: 0,
-            offsetY: 18,
-            fill: new Fill({
-                color: 'black'
-            })
-        })
+  let colorFill = '#a01b0a'
+  let radiusCircle = 8
+  // const distancekilometer = feature.get('distance')/1000
+  const timeMin = feature.get('duration')/60
+  if(timeMin > 60) {
+    colorFill = '#a01b0a'
+    radiusCircle = 7.5
+  } else if (timeMin <= 60 && timeMin > 40) {
+    colorFill = '#b7584c'
+    radiusCircle = 7.5
+  } else if (timeMin <= 40 && timeMin > 30) {
+    colorFill = '#c69b02'
+    radiusCircle = 7
+  } else if (timeMin <= 30 && timeMin > 20) {
+    colorFill = '#e8c64f'
+    radiusCircle = 7
+  } else if (timeMin <= 20 && timeMin > 10) {
+    colorFill = '#459c50'
+    radiusCircle = 6.5
+  }else if (timeMin <= 10) {
+    colorFill = '#017410'
+    radiusCircle = 6.5
+  }
+  return new Style({
+    image: new Circle({
+      radius: radiusCircle,
+      fill: new Fill({
+        color: colorFill,
+      })
+    }),
+    fill: new Fill({
+      color: 'black',
+    }),
+    stroke: new Stroke({
+      color: 'white',
+      width: 2,
+    }),
+    text: new Text({
+      text: isShowName.value ? feature.get('name') : isShowAddress.value ? feature.get('address') : '' ,
+      font: '15px sans-serif',
+      offsetX: 0,
+      offsetY: 18,
+      fill: new Fill({
+        color: 'black'
+      })
     })
+  })
 }
 
 const featureBuild = new Feature({
-    geometry: new Point(mapParams.center),
+  geometry: new Point(mapParams.center),
 })
 featureBuild.setStyle(styleBuild)
 buildSource.addFeature(featureBuild)
 
 // 加载员工要素
 const initEmployeeData = () => {
-    locateSource.clear()
-    for (let i = 0; i < gisJson.length; i++) {
-        let yearIn = ''
-        let yearLevel = 0
-        let lonlat = gisJson[i].lonlat as unknown as string
-        const onboardingTime = gisJson[i].onboarding_time
-        const isResign = gisJson[i].resign_time? true : false
-        // 计算入职年限
-        if(onboardingTime) {
-            var new_date = new Date()
-            var old_date = new Date(onboardingTime) //设置过去的一个时间点，"yyyy-MM-dd HH:mm:ss"格式化日期
-            var difftime = Number(new_date) - Number(old_date) //计算时间差
-            var year = Math.floor(difftime/(1000 * 60 * 60 * 24 * 365))
-            var month = Math.floor((difftime%(1000 * 60 * 60 * 24 * 365))/(1000 * 60 * 60 * 24 * 31))
-            yearIn = `${year}年${month}月`
-            if(year >= 10) {
-                yearLevel = 1
-            } else if (year < 10 && year >= 6) {
-                yearLevel = 2
-            } else if (year < 6 && year >= 3) {
-                yearLevel = 3
-            } else if (year < 3 && year >= 1) {
-                yearLevel = 4
-            } else {
-                yearLevel = 5
-            }
-        }
-        if(isResign) {
-            yearLevel = 6
-        }
-        // 没有地址，在一定范围内随机生成坐标
-        if (!lonlat) {
-            const basicLon = 117.005046
-            const basicLat = 36.759642
-            const operator1 = Math.random() > 0.5 ? '+' : '-'
-            const operator2 = Math.random() > 0.5 ? '+' : '-'
-            const lon = eval(basicLon + operator1 + '0.1 * Math.random() * Math.random()')
-            const lat = eval(basicLat + operator2 + '0.01 * Math.random() * Math.random()')
-            lonlat = lon + ',' + lat
-        }
-        const feature = new Feature({
-            geometry: new Point(lonlat.split(',').map(Number) as Coordinate),
-            id: gisJson[i].id,
-            name: gisJson[i].name,
-            department: gisJson[i].department,
-            address: gisJson[i].address,
-            onboarding_time: gisJson[i].onboarding_time,
-            yearIn: yearIn,
-            yearLevel: yearLevel,
-            lonlat: gisJson[i].lonlat,
-            distance: gisJson[i].distance,
-            duration: gisJson[i].duration,
-            resign_time: gisJson[i].resign_time
-        })
-        if(isShowWithYearLevel.value){
-            feature.setStyle(createLabelStyleWithYearLevel(feature))
-        } else if(isShowWithDistance.value) {
-            feature.setStyle(createLabelStyleWithDistance(feature))
-        } else {
-            feature.setStyle(createLabelStyle(feature))
-        }
-        locateSource.addFeature(feature)
+  locateSource.clear()
+  for (let i = 0; i < gisJson.length; i++) {
+    let yearIn = ''
+    let yearLevel = 0
+    let lonlat = gisJson[i].lonlat as unknown as string
+    const onboardingTime = gisJson[i].onboarding_time
+    const isResign = gisJson[i].resign_time? true : false
+    // 计算入职年限
+    if(onboardingTime) {
+      var new_date = new Date()
+      var old_date = new Date(onboardingTime) //设置过去的一个时间点，"yyyy-MM-dd HH:mm:ss"格式化日期
+      var difftime = Number(new_date) - Number(old_date) //计算时间差
+      var year = Math.floor(difftime/(1000 * 60 * 60 * 24 * 365))
+      var month = Math.floor((difftime%(1000 * 60 * 60 * 24 * 365))/(1000 * 60 * 60 * 24 * 31))
+      yearIn = `${year}年${month}月`
+      if(year >= 10) {
+        yearLevel = 1
+      } else if (year < 10 && year >= 6) {
+        yearLevel = 2
+      } else if (year < 6 && year >= 3) {
+        yearLevel = 3
+      } else if (year < 3 && year >= 1) {
+        yearLevel = 4
+      } else {
+        yearLevel = 5
+      }
     }
+    if(isResign) {
+      yearLevel = 6
+    }
+    // 没有地址，在一定范围内随机生成坐标
+    if (!lonlat) {
+      const basicLon = 117.005046
+      const basicLat = 36.759642
+      const operator1 = Math.random() > 0.5 ? '+' : '-'
+      const operator2 = Math.random() > 0.5 ? '+' : '-'
+      const lon = eval(basicLon + operator1 + '0.1 * Math.random() * Math.random()')
+      const lat = eval(basicLat + operator2 + '0.01 * Math.random() * Math.random()')
+      lonlat = lon + ',' + lat
+    }
+    const feature = new Feature({
+      geometry: new Point(lonlat.split(',').map(Number) as Coordinate),
+      id: gisJson[i].id,
+      name: gisJson[i].name,
+      department: gisJson[i].department,
+      address: gisJson[i].address,
+      onboarding_time: gisJson[i].onboarding_time,
+      yearIn: yearIn,
+      yearLevel: yearLevel,
+      lonlat: gisJson[i].lonlat,
+      distance: gisJson[i].distance,
+      duration: gisJson[i].duration,
+      resign_time: gisJson[i].resign_time
+    })
+    if(isShowWithYearLevel.value){
+      feature.setStyle(createLabelStyleWithYearLevel(feature))
+    } else if(isShowWithDistance.value) {
+      feature.setStyle(createLabelStyleWithDistance(feature))
+    } else {
+      feature.setStyle(createLabelStyle(feature))
+    }
+    locateSource.addFeature(feature)
+  }
 }
 const initPopup = () => {
-    // 获取popup的dom对象
-    var container = document.getElementById('popup')
+  // 获取popup的dom对象
+  var container = document.getElementById('popup')
 
-    // 创建popup
-    popup = new Overlay({
-        element: container as HTMLElement,
-        autoPan: true,
-        positioning: 'bottom-center',
-        stopEvent: true,
-        // autoPanAnimation: {
-        //     duration: 250
-        // }
-    })
-    map.addOverlay(popup)
+  // 创建popup
+  popup = new Overlay({
+    element: container as HTMLElement,
+    autoPan: true,
+    positioning: 'bottom-center',
+    stopEvent: true,
+    // autoPanAnimation: {
+    //     duration: 250
+    // }
+  })
+  map.addOverlay(popup)
 
 }
 // 监听鼠标单击事件，点击feature后弹出popup
 function clickMap(e: any) {
-    var coordinate = e.coordinate
-    const features = map.getFeaturesAtPixel(e.pixel)
-    console.log(features)
-    if (features.length > 0) {
-        activeName.value = features[0].get('name')
-        featurePanes.length = 0
-        for (let i = 0; i < features.length; i++) {
-            const feature: any = {}
-            feature.id = features[i].get('id')
-            feature.name = features[i].get('name')
-            feature.department = features[i].get('department')
-            feature.onboarding_time = features[i].get('onboarding_time')
-            feature.resign_time = features[i].get('resign_time')
-            feature.address = features[i].get('address')
-            feature.lonlat = features[i].get('lonlat')
-            feature.yearIn = features[i].get('yearIn')
-            feature.yearLevel = features[i].get('yearLevel')
-            feature.distance = features[i].get('distance')
-            feature.duration = features[i].get('duration')
-            featurePanes.push(feature)
-        }
-        popup.setPosition(coordinate)
+  var coordinate = e.coordinate
+  const features = map.getFeaturesAtPixel(e.pixel)
+  console.log(features)
+  if (features.length > 0) {
+    activeName.value = features[0].get('name')
+    featurePanes.length = 0
+    for (let i = 0; i < features.length; i++) {
+      const feature: any = {}
+      feature.id = features[i].get('id')
+      feature.name = features[i].get('name')
+      feature.department = features[i].get('department')
+      feature.onboarding_time = features[i].get('onboarding_time')
+      feature.resign_time = features[i].get('resign_time')
+      feature.address = features[i].get('address')
+      feature.lonlat = features[i].get('lonlat')
+      feature.yearIn = features[i].get('yearIn')
+      feature.yearLevel = features[i].get('yearLevel')
+      feature.distance = features[i].get('distance')
+      feature.duration = features[i].get('duration')
+      featurePanes.push(feature)
     }
+    popup.setPosition(coordinate)
+  }
 }
 
 // 是否展示名称
@@ -358,35 +358,35 @@ const featurePanes: any[] = reactive([])
 
 // 名称展示切换
 const toggleShowName = () => {
-    if(isShowName.value && isShowAddress.value) {
-        isShowAddress.value = false
-    }
-    initEmployeeData()
+  if(isShowName.value && isShowAddress.value) {
+    isShowAddress.value = false
+  }
+  initEmployeeData()
 }
 // 地址展示切换
 const toggleShowAddress = () => {
-    if(isShowName.value && isShowAddress.value) {
-        isShowName.value = false
-    }
-    initEmployeeData()
+  if(isShowName.value && isShowAddress.value) {
+    isShowName.value = false
+  }
+  initEmployeeData()
 }
 // 展示形式切换
 const toggleShowWithYearLevel = () => {
-    if(isShowWithYearLevel.value) {
-        isShowWithDistance.value = false
-        map.removeLayer(buildLayer)
-    }
-    initEmployeeData()
+  if(isShowWithYearLevel.value) {
+    isShowWithDistance.value = false
+    map.removeLayer(buildLayer)
+  }
+  initEmployeeData()
 }
 
 const toggleShowWithDistance = () => {
-    if(isShowWithDistance.value) {
-        isShowWithYearLevel.value = false
-        map.addLayer(buildLayer)
-    } else {
-        map.removeLayer(buildLayer)
-    }
-    initEmployeeData()
+  if(isShowWithDistance.value) {
+    isShowWithYearLevel.value = false
+    map.addLayer(buildLayer)
+  } else {
+    map.removeLayer(buildLayer)
+  }
+  initEmployeeData()
 }
 </script>
 

@@ -11,22 +11,22 @@ import WeatherTimeLine from '../../components/WeatherTimeLine.vue'
 
 const map = ref()
 const gaodeTileLayer = new TileLayer({
-    source: new XYZ({
-        url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
-    })
+  source: new XYZ({
+    url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
+  })
 })
 
 onMounted(() => {
-    map.value = new Map({
-        layers: [gaodeTileLayer
-        ],
-        target: 'map',
-        view: new View({
-            center: [117, 37],
-            zoom: 10,
-            projection: 'EPSG:4326',
-        })
+  map.value = new Map({
+    layers: [gaodeTileLayer
+    ],
+    target: 'map',
+    view: new View({
+      center: [117, 37],
+      zoom: 10,
+      projection: 'EPSG:4326',
     })
+  })
 })
 
 

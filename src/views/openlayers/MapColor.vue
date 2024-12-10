@@ -23,151 +23,151 @@ const isShowGroupSlider = ref(false)
 const radioSelected = ref('graygreen-quick')
 // 地图参数定义
 const params = {
-    mapCenter: [106.408845, 34.653968]
+  mapCenter: [106.408845, 34.653968]
 }
 let map: Map = new Map({})
 let colorLayer = new Layer({})
 // 生命周期函数
 onMounted(() => {
-    loadMap()
+  loadMap()
 })
 // 底图变色的第二种方式，该方式加载速度快
 const layerGaode2 = new TileLayer({
-    source: new XYZ({
-        // projection: gcjMecator,
-        url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-        tileLoadFunction: function (imageTile, src) {
-            // 使用滤镜 将白色修改为深色
-            var img = new Image()
-            // img.crossOrigin = ''
-            // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
-            img.setAttribute('crossOrigin', 'anonymous')
-            img.onload = function () {
-                var canvas = document.createElement('canvas') as HTMLCanvasElement
-                var w = img.width
-                var h = img.height
-                canvas.width = w
-                canvas.height = h
-                var context = canvas.getContext('2d') as CanvasRenderingContext2D
-                context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
-                var imageData = context.getImageData(0, 0, w, h)
-                for (let i = 0; i < imageData.height; i++) {
-                    for (let j = 0; j < imageData.width; j++) {
-                        var x = (i * 4) * imageData.width + (j * 4)
-                        var r = imageData.data[x]
-                        var g = imageData.data[x + 1]
-                        var b = imageData.data[x + 2]
-                        imageData.data[x] = 55 - imageData.data[x]
-                        imageData.data[x + 1] = 255 - imageData.data[x + 1]
-                        imageData.data[x + 2] = 305 - imageData.data[x + 2]
-                    }
-                }
-                context.putImageData(imageData, 0, 0)
-                // 默认是Tile类型, 强行指定为ImageTile时，tileLoadFunction报类型不兼容
-                imageTile.getImage().src = canvas.toDataURL('image/png')
-            }
-            img.src = src
+  source: new XYZ({
+    // projection: gcjMecator,
+    url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+    tileLoadFunction: function (imageTile, src) {
+      // 使用滤镜 将白色修改为深色
+      var img = new Image()
+      // img.crossOrigin = ''
+      // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
+      img.setAttribute('crossOrigin', 'anonymous')
+      img.onload = function () {
+        var canvas = document.createElement('canvas') as HTMLCanvasElement
+        var w = img.width
+        var h = img.height
+        canvas.width = w
+        canvas.height = h
+        var context = canvas.getContext('2d') as CanvasRenderingContext2D
+        context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
+        var imageData = context.getImageData(0, 0, w, h)
+        for (let i = 0; i < imageData.height; i++) {
+          for (let j = 0; j < imageData.width; j++) {
+            var x = (i * 4) * imageData.width + (j * 4)
+            var r = imageData.data[x]
+            var g = imageData.data[x + 1]
+            var b = imageData.data[x + 2]
+            imageData.data[x] = 55 - imageData.data[x]
+            imageData.data[x + 1] = 255 - imageData.data[x + 1]
+            imageData.data[x + 2] = 305 - imageData.data[x + 2]
+          }
         }
-    })
+        context.putImageData(imageData, 0, 0)
+        // 默认是Tile类型, 强行指定为ImageTile时，tileLoadFunction报类型不兼容
+        imageTile.getImage().src = canvas.toDataURL('image/png')
+      }
+      img.src = src
+    }
+  })
 })
 
 // 底图变色的第三种方式，该方式通过灰CSS3滤镜，改变地图风格，加载速度最快
 let sourceXYZ3 = new XYZ({
-    // projection: gcjMecator,
-    url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-    tileLoadFunction: function (imageTile, src) {
-        // 使用滤镜 将白色修改为深色
-        var img = new Image()
-        // img.crossOrigin = ''
-        // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
-        img.setAttribute('crossOrigin', 'anonymous')
-        img.onload = function () {
-            var canvas = document.createElement('canvas') as HTMLCanvasElement
-            var w = img.width
-            var h = img.height
-            canvas.width = w
-            canvas.height = h
-            var context = canvas.getContext('2d') as CanvasRenderingContext2D
-            context.filter = `grayscale(${valueGrayScale.value}%) invert(${valueInvert.value}%) sepia(${valueSepia.value}%) hue-rotate(${valueHueRotate.value}deg) saturate(${valueSaturate.value}%) brightness(${valueBrightness.value}%) contrast(${valueContrast.value}%)`
-            context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
-            imageTile.getImage().src = canvas.toDataURL('image/png')
-        }
-        img.src = src
+  // projection: gcjMecator,
+  url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+  tileLoadFunction: function (imageTile, src) {
+    // 使用滤镜 将白色修改为深色
+    var img = new Image()
+    // img.crossOrigin = ''
+    // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
+    img.setAttribute('crossOrigin', 'anonymous')
+    img.onload = function () {
+      var canvas = document.createElement('canvas') as HTMLCanvasElement
+      var w = img.width
+      var h = img.height
+      canvas.width = w
+      canvas.height = h
+      var context = canvas.getContext('2d') as CanvasRenderingContext2D
+      context.filter = `grayscale(${valueGrayScale.value}%) invert(${valueInvert.value}%) sepia(${valueSepia.value}%) hue-rotate(${valueHueRotate.value}deg) saturate(${valueSaturate.value}%) brightness(${valueBrightness.value}%) contrast(${valueContrast.value}%)`
+      context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
+      imageTile.getImage().src = canvas.toDataURL('image/png')
     }
+    img.src = src
+  }
 })
 const layerGaode3 = new TileLayer({
-    source: sourceXYZ3
+  source: sourceXYZ3
 })
 // 加载地图
 function loadMap() {
-    map = new Map({
-        // layers: [gaodeLayer],
-        target: 'map',
-        view: new View({
-            center: params.mapCenter,
-            zoom: 4,
-            projection: 'EPSG:4326',
-        })
+  map = new Map({
+    // layers: [gaodeLayer],
+    target: 'map',
+    view: new View({
+      center: params.mapCenter,
+      zoom: 4,
+      projection: 'EPSG:4326',
     })
-    colorLayer = layerGaode2
-    map.addLayer(colorLayer)
+  })
+  colorLayer = layerGaode2
+  map.addLayer(colorLayer)
 }
 
 // 选择颜色选择框事件
 const selectColorRadio = () => {
-    map.removeLayer(colorLayer)
-    if (radioSelected.value === 'graygreen-quick') {
-        colorLayer = layerGaode2
-    } else if (radioSelected.value === 'color-css') {
-        colorLayer = layerGaode3
-    } else {
-        colorLayer = getColorLayer('gaode', radioSelected.value)
-    }
-    map.addLayer(colorLayer)
+  map.removeLayer(colorLayer)
+  if (radioSelected.value === 'graygreen-quick') {
+    colorLayer = layerGaode2
+  } else if (radioSelected.value === 'color-css') {
+    colorLayer = layerGaode3
+  } else {
+    colorLayer = getColorLayer('gaode', radioSelected.value)
+  }
+  map.addLayer(colorLayer)
 }
 
 // 滑动条滑动事件
 const sliderMove = () => {
-    sourceXYZ3 = new XYZ({
+  sourceXYZ3 = new XYZ({
     // projection: gcjMecator,
-        url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
-        tileLoadFunction: function (imageTile, src) {
-        // 使用滤镜 将白色修改为深色
-            var img = new Image()
-            // img.crossOrigin = ''
-            // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
-            img.setAttribute('crossOrigin', 'anonymous')
-            img.onload = function () {
-                var canvas = document.createElement('canvas') as HTMLCanvasElement
-                var w = img.width
-                var h = img.height
-                canvas.width = w
-                canvas.height = h
-                var context = canvas.getContext('2d') as CanvasRenderingContext2D
-                context.filter = `grayscale(${valueGrayScale.value}%) invert(${valueInvert.value}%) sepia(${valueSepia.value}%) hue-rotate(${valueHueRotate.value}deg) saturate(${valueSaturate.value}%) brightness(${valueBrightness.value}%) contrast(${valueContrast.value}%)`
-                context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
-                imageTile.getImage().src = canvas.toDataURL('image/png')
-            }
-            img.src = src
-        }
-    })
-    layerGaode3.setSource(sourceXYZ3)
+    url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+    tileLoadFunction: function (imageTile, src) {
+      // 使用滤镜 将白色修改为深色
+      var img = new Image()
+      // img.crossOrigin = ''
+      // 设置图片不从缓存取，从缓存取可能会出现跨域，导致加载失败
+      img.setAttribute('crossOrigin', 'anonymous')
+      img.onload = function () {
+        var canvas = document.createElement('canvas') as HTMLCanvasElement
+        var w = img.width
+        var h = img.height
+        canvas.width = w
+        canvas.height = h
+        var context = canvas.getContext('2d') as CanvasRenderingContext2D
+        context.filter = `grayscale(${valueGrayScale.value}%) invert(${valueInvert.value}%) sepia(${valueSepia.value}%) hue-rotate(${valueHueRotate.value}deg) saturate(${valueSaturate.value}%) brightness(${valueBrightness.value}%) contrast(${valueContrast.value}%)`
+        context.drawImage(img, 0, 0, w, h, 0, 0, w, h)
+        imageTile.getImage().src = canvas.toDataURL('image/png')
+      }
+      img.src = src
+    }
+  })
+  layerGaode3.setSource(sourceXYZ3)
 }
 // 滑动条提示文字格式%
 const formatTooltipPercent = (val: number) => {  
-    return val + '%'
+  return val + '%'
 }
 // 滑动条提示文字格式deg
 const formatTooltipDeg = (val: number) => {  
-    return val + 'deg'
+  return val + 'deg'
 }
 // 侦听器，根据radio选择，控制slider是否展示
 watch(radioSelected, async(newVal) => {
-    if(newVal === 'color-css') {
-        isShowGroupSlider.value = true
-    } else {
-        isShowGroupSlider.value = false
-    }
+  if(newVal === 'color-css') {
+    isShowGroupSlider.value = true
+  } else {
+    isShowGroupSlider.value = false
+  }
 })
 </script>
 

@@ -5,47 +5,47 @@ import TileLayer from 'ol/layer/Tile'
 import OSM from 'ol/source/OSM'
 import { onMounted } from 'vue'
 let view = new View({
-    projection: 'EPSG:4326',
-    center: [108.961029, 34.208386],
-    zoom: 12,
+  projection: 'EPSG:4326',
+  center: [108.961029, 34.208386],
+  zoom: 12,
 })
 onMounted(() => {
-    let map = new Map({
-        target: 'mapContainer',
-        layers: [
-            new TileLayer({
-                source: new OSM(),
-            }),
-        ],
-        view: view,
-    })
-    let map2 = new Map({
-        target: 'mapContainer2',
-        layers: [
-            new TileLayer({
-                source: new OSM(),
-            }),
-        ],
-        view: view,
-    })
-    let map3 = new Map({
-        target: 'mapContainer3',
-        layers: [
-            new TileLayer({
-                source: new OSM(),
-            }),
-        ],
-        view: view,
-    })
-    let map4 = new Map({
-        target: 'mapContainer4',
-        layers: [
-            new TileLayer({
-                source: new OSM(),
-            }),
-        ],
-        view: view,
-    })
+  let map = new Map({
+    target: 'mapContainer',
+    layers: [
+      new TileLayer({
+        source: new OSM(),
+      }),
+    ],
+    view: view,
+  })
+  let map2 = new Map({
+    target: 'mapContainer2',
+    layers: [
+      new TileLayer({
+        source: new OSM(),
+      }),
+    ],
+    view: view,
+  })
+  let map3 = new Map({
+    target: 'mapContainer3',
+    layers: [
+      new TileLayer({
+        source: new OSM(),
+      }),
+    ],
+    view: view,
+  })
+  let map4 = new Map({
+    target: 'mapContainer4',
+    layers: [
+      new TileLayer({
+        source: new OSM(),
+      }),
+    ],
+    view: view,
+  })
 })
 </script>
 
