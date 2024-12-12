@@ -39,6 +39,11 @@ const allMenu = [{
   showRoute: '/data-type',
   desc: '通过编辑生成各类GIS数据类型，提供编辑、下载功能'
 },{
+  title: '高德在线瓦片',
+  imgSrc: getAssetsFile('gaode-online-tile.png'),
+  showRoute: '/gaode-online-tile',
+  desc: '展示各种类型的高德在线瓦片地图'
+},{
   title: '坐标转换',
   imgSrc: getAssetsFile('map1.png'),
   showRoute: '/coor-convert',

@@ -248,6 +248,13 @@ const routes:Array<RouteRecordRaw> = [
     meta: {
       keepAlive: false
     }
+  },{
+    name: 'GaodeOnlineTile',
+    path: '/gaode-online-tile',
+    component: () => import('@/views/openlayers/GaodeOnlineTile.vue'),
+    meta: {
+      keepAlive: false
+    }
   }
 ]
 

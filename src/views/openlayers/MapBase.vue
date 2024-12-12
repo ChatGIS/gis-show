@@ -1,3 +1,8 @@
+
+<template>
+  <div id="zoom-level-now">当前级别：{{zoom}}</div>
+  <div id="map-container" class="map-container"></div>
+</template>
 <script setup>
 import 'ol/ol.css'
 import { Map, View } from 'ol'
@@ -20,7 +25,7 @@ let zoom = ref(0)
 onMounted(() => {
   map = new Map({
     layers: [gaodeTileLayer],
-    target: 'map',
+    target: 'map-container',
     view: new View({
       center: mapObj.center,
       zoom: mapObj.zoom,
@@ -51,14 +56,8 @@ const controlMousePosition = new MousePosition({
   target: document.getElementById('mouse-position')
 })
 </script>
-
-<template>
-    <div id="zoom-level-now">当前级别：{{zoom}}</div>
-    <div id="map" class="map"></div>
-</template>
-
 <style scoped>
-.map {
+.map-container {
     width: 100%;
     height: 100%;
 }
