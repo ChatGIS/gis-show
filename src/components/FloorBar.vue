@@ -10,19 +10,19 @@
 const emit = defineEmits(['handleFloorClick'])
 
 const props = defineProps({
-    floors: {
-        type: Array,
-        default: () => [{ id: 1, name: 'F1' },
-            { id: 2, name: 'F2' },
-            { id: 3, name: 'F3' },
-            { id: 4, name: 'F4' },
-            { id: 5, name: 'F5' },
-            { id: 6, name: 'F6' },
-            { id: 7, name: 'F7' }]
-    }
+  floors: {
+    type: Array,
+    default: () => [{ id: 1, name: 'F1' },
+      { id: 2, name: 'F2' },
+      { id: 3, name: 'F3' },
+      { id: 4, name: 'F4' },
+      { id: 5, name: 'F5' },
+      { id: 6, name: 'F6' },
+      { id: 7, name: 'F7' }]
+  }
 })
 const handleTabClick = (pane) => {
-    emit('handleFloorClick', pane.props.name)
+  emit('handleFloorClick', pane.props.name)
 }
 </script>
 

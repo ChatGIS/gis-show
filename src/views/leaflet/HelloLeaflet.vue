@@ -6,12 +6,12 @@ import 'leaflet/dist/leaflet.css'
 import { onMounted } from 'vue'
 
 onMounted(() => {
-    const map = L.map('myLeaflet', {
-    }).setView([30, 110], 4)
-    // 加载高德基础地图
-    let name = L.tileLayer(
-        'http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
-    ).addTo(map)
+  const map = L.map('myLeaflet', {
+  }).setView([30, 110], 4)
+  // 加载高德基础地图
+  let name = L.tileLayer(
+    'http://webrd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}',
+  ).addTo(map)
 })
 </script>
 

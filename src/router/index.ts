@@ -242,13 +242,6 @@ const routes:Array<RouteRecordRaw> = [
       keepAlive: false
     }
   },{
-    name: 'BeiDouGridLocationCodeAna',
-    path: '/beidou-grid-location-code-ana',
-    component: () => import('@/views/openlayers/BeiDouGridLocationCodeAna.vue'),
-    meta: {
-      keepAlive: false
-    }
-  },{
     name: 'GaodeOnlineTile',
     path: '/gaode-online-tile',
     component: () => import('@/views/openlayers/GaodeOnlineTile.vue'),
