@@ -11,13 +11,6 @@ const routes:Array<RouteRecordRaw> = [
       keepAlive: true
     }
   },{
-    name: 'DisplayAMap',
-    path: '/arcgismap',
-    component: () => import('@/views/arcgis/DisplayAMap.vue'),
-    meta: {
-      keepAlive: false
-    }
-  },{
     name: 'MapBase',
     path: '/map-base',
     component: () => import('@/views/openlayers/MapBase.vue'),

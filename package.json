@@ -5,13 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "copy": "ncp ./node_modules/@arcgis/core/assets ./public/assets",
-    "postinstall": "npm run copy"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@antv/l7": "^2.13.2",
-    "@arcgis/core": "^4.24.7",
     "@element-plus/icons-vue": "^2.0.10",
     "@siedlerchr/types-ol-ext": "^3.2.0",
     "@turf/turf": "^7.1.0",

@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AreaSelect: typeof import('./src/components/AreaSelect.vue')['default']
     DataFilter: typeof import('./src/components/DataFilter.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -43,7 +42,6 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     FloorBar: typeof import('./src/components/FloorBar.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    Legend: typeof import('./src/components/Legend.vue')['default']
     LegendShow: typeof import('./src/components/LegendShow.vue')['default']
     MapMenu: typeof import('./src/components/mapMenu/index.vue')['default']
     PopupList: typeof import('./src/components/openlayers/PopupList.vue')['default']
