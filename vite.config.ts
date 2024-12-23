@@ -14,7 +14,7 @@ const pjoneServer = 'http://127.0.0.1:1304/'
 const geoserver = 'http://127.0.0.1:1302/'
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/gisshow/',
+  base: '/gis-show/',
   plugins: [vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
@@ -30,6 +30,9 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),  // 路径别名
     }
+  },
+  build: {
+    outDir: 'docs'
   },
   server: {
     port: 13010,
