@@ -1,9 +1,31 @@
+<template>
+  <div id="menu-div" :style="'background-image:url(' + menuBackground + ')'">
+      <el-image style="width: 100px; height: 100px" :src="ImageProjectIcon" fit="fill"/>
+      <h1>{{ title }}</h1>
+      <el-scrollbar>
+          <el-row :gutter="20" justify="center" v-for="(items, index) in menus" :key="index">
+              <el-col v-for="(item) in items" :key="item" :span="4">
+                  <el-card :body-style="{ padding: '0px' }" @click="toPage(item.showRoute)" shadow="hover">
+                      <img style="width:200px; height:100px" :src="item.imgSrc" class="image" />
+                      <div class="info">
+                          <span>{{ item.title }}</span>
+                      </div>
+                      <div class="desc">
+                          <span>{{ item.desc }}</span>
+                      </div>
+                  </el-card>
+              </el-col>
+          </el-row>
+      </el-scrollbar>
+  </div>
+</template>
 <script setup lang='ts'>
 import getAssetsFile from '@/utils/sys-use'
 import router from '@/router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import menuBackground from '@/assets/image/menu-background.jpg'
 import ImageProjectIcon from '@/assets/image/project_icon_transparent.png'
+import pkg from '../../../package.json'
 
 interface Menu {
     title: string;
@@ -11,7 +33,6 @@ interface Menu {
     showRoute: string;
     desc: string;
 }
-
 // 所有菜单项
 const allMenu = [{
   title: '基础地图',
@@ -180,34 +201,12 @@ const menus = computed(() => {
 const menuNum = computed(() => {
   return allMenu.length
 })
+const title = ref('GisShow' + ' v' + pkg.version + '（' + menuNum.value + '）')
 // 跳转页面
 const toPage = (route: string) => {
   router.push(route)
 }
 </script>
-
-<template>
-    <div id="menu-div" :style="'background-image:url(' + menuBackground + ')'">
-        <el-image style="width: 100px; height: 100px" :src="ImageProjectIcon" fit="fill"/>
-        <h1>功能菜单（{{ menuNum }}）</h1>
-        <el-scrollbar>
-            <el-row :gutter="20" justify="center" v-for="(items, index) in menus" :key="index">
-                <el-col v-for="(item) in items" :key="item" :span="4">
-                    <el-card :body-style="{ padding: '0px' }" @click="toPage(item.showRoute)" shadow="hover">
-                        <img style="width:200px; height:100px" :src="item.imgSrc" class="image" />
-                        <div class="info">
-                            <span>{{ item.title }}</span>
-                        </div>
-                        <div class="desc">
-                            <span>{{ item.desc }}</span>
-                        </div>
-                    </el-card>
-                </el-col>
-            </el-row>
-        </el-scrollbar>
-    </div>
-</template>
-
 <style scoped>
 #menu-div {
     /* background-image: url(); */
