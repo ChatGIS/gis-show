@@ -35,6 +35,11 @@ interface Menu {
 }
 // 所有菜单项
 const allMenu = [{
+  title: '高德在线瓦片',
+  imgSrc: getAssetsFile('menu/gaode-online-tile.png'),
+  showRoute: '/gaode-online-tile',
+  desc: '展示各种类型的高德在线瓦片地图'
+},/* {
   title: '基础地图',
   imgSrc: getAssetsFile('menu/default.png'),
   showRoute: '/map-base',
@@ -59,11 +64,6 @@ const allMenu = [{
   imgSrc: getAssetsFile('menu/default.png'),
   showRoute: '/data-type',
   desc: '通过编辑生成各类GIS数据类型，提供编辑、下载功能'
-},{
-  title: '高德在线瓦片',
-  imgSrc: getAssetsFile('menu/gaode-online-tile.png'),
-  showRoute: '/gaode-online-tile',
-  desc: '展示各种类型的高德在线瓦片地图'
 },{
   title: '坐标转换',
   imgSrc: getAssetsFile('menu/default.png'),
@@ -183,7 +183,7 @@ const allMenu = [{
   showRoute: '/beidou-grid-location-code',
   desc: '北斗网格位置码',
   tags: ['北斗', '网格码']
-}]
+} */]
 
 // 计算属性，拆为二维数组
 const menus = computed(() => {
