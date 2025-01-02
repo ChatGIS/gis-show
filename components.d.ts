@@ -40,6 +40,7 @@ declare module '@vue/runtime-core' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
     FloorBar: typeof import('./src/components/FloorBar.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LegendShow: typeof import('./src/components/LegendShow.vue')['default']
