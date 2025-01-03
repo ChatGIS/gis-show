@@ -49,6 +49,7 @@ declare module '@vue/runtime-core' {
     PopupList: typeof import('./src/components/openlayers/PopupList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SideNav: typeof import('./src/components/SideNav.vue')['default']
     TrafficNav: typeof import('./src/components/TrafficNav.vue')['default']
     WeatherTimeLine: typeof import('./src/components/WeatherTimeLine.vue')['default']
   }

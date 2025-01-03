@@ -68,6 +68,7 @@
       <div id="map-container28" class="map-container"></div>
     </el-col>
   </el-row>
+  <SideNav/>
 </template>
 <script setup>
 import 'ol/ol.css'
@@ -75,6 +76,7 @@ import { Map, View } from 'ol'
 import { Tile as TileLayer } from 'ol/layer'
 import { XYZ } from 'ol/source'
 import { onMounted } from 'vue'
+import SideNav from '@/components/SideNav.vue'
 
 const mapObj = {
   center: [117.01533, 36.661184],

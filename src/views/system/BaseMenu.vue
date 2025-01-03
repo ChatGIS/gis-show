@@ -27,6 +27,7 @@
               </el-col>
           </el-row>
       </el-scrollbar>
+      <SideNav></SideNav>
   </div>
 </template>
 <script setup>
@@ -36,6 +37,7 @@ import menuBackground from '@/assets/image/menu-background.jpg'
 import ImageProjectIcon from '@/assets/image/project_icon_transparent.png'
 import pkg from '../../../package.json'
 import { menus} from './menus.js'
+import SideNav from '@/components/SideNav.vue'
 
 const tagOptions = ref([])
 let menuRow = ref([])
