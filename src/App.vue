@@ -9,10 +9,12 @@
   </nav>
   <main>
     <RouterView />
+    <el-button type="primary">element plus</el-button>
   </main>
 </template>
 <script lang="js" setup>
 import { useRoute } from 'vue-router';
+// import { ElButton } from 'element-plus';
 
 const route =  useRoute()
 </script>
