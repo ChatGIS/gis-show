@@ -26,7 +26,8 @@
                   </el-card>
               </el-col>
           </el-row>
-      </el-scrollbar>
+        </el-scrollbar>
+        <side-nav/>
     </div>
 </template>
 <script setup>
@@ -34,6 +35,7 @@ import { ref, onMounted } from 'vue'
 import imgBackground from '@/assets/images/home/background.jpg'
 import imgProjectIcon from '@/assets/images/home/project_icon.png'
 import menus from './menus';
+import SideNav from '@/components/SideNav.vue';
 
 let menuNum = ref(0)
 const tagOptions = ref([])
