@@ -28,6 +28,7 @@
           </el-row>
         </el-scrollbar>
         <side-nav/>
+        <footer-info/>
     </div>
 </template>
 <script setup>
@@ -36,6 +37,7 @@ import imgBackground from '@/assets/images/home/background.jpg'
 import imgProjectIcon from '@/assets/images/home/project_icon.png'
 import menus from './menus';
 import SideNav from '@/components/SideNav.vue';
+import FooterInfo from '@/components/FooterInfo.vue';
 
 let menuNum = ref(0)
 const tagOptions = ref([])
