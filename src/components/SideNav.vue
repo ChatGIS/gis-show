@@ -20,7 +20,7 @@
 <script setup>
 const handleClick = (val) => {
   if(val == 1) {
-    window.location.href = window.location.origin + '/gis-show/#/'
+    window.location.href = window.location.origin + '/gis-show/'
   } else if (val == 2) {
     window.open('https://chatgis.space/gisshow/', '_blank')
   } else if (val == 3) {
