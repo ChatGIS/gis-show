@@ -72,7 +72,7 @@
   <FooterInfo article="https://chatgis.space/post/0010/index.html"/>
 </template>
 <script setup>
-// import 'ol/ol.css'
+import 'ol/ol.css'
 import { Map, View } from 'ol'
 import { Tile as TileLayer } from 'ol/layer'
 import { XYZ } from 'ol/source'
