@@ -12,7 +12,7 @@
         <el-scrollbar>
           <el-row :gutter="20" justify="center" v-for="(items, index) in menuRow" :key="index">
               <el-col v-for="(item) in items" :key="item" :span="4">
-                  <el-card :body-style="{ padding: '0px' }" @click="toPage(item.showRoute)" shadow="hover">
+                  <el-card :body-style="{ padding: '0px' }" @click="toPage(item.path)" shadow="hover">
                       <img style="width:200px; height:100px" :src="item.imgSrc" class="image" />
                       <div class="info">
                           <span>{{ item.title }}</span>
@@ -33,6 +33,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 import imgBackground from '@/assets/images/home/background.jpg'
 import imgProjectIcon from '@/assets/images/home/project_icon.png'
 import menus from './menus';
@@ -43,6 +44,7 @@ let menuNum = ref(0)
 const tagOptions = ref([])
 let menuRow = ref([])
 const selectedTags = []
+const router = useRouter()
 onMounted(() => {
   initTags()
   initMenus()
@@ -135,6 +137,14 @@ const initMenus = () => {
     count += menuFilter[i].length
   }
   menuNum.value = count
+}
+/**
+ * @description: 跳转页面
+ * @param {*} path
+ * @return {*}
+ */
+ const toPage = (path) => {
+  router.push(path)
 }
 </script>
 <style scoped>
