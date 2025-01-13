@@ -12,6 +12,12 @@ const menus = [{
   desc: '绘制生成常用GIS数据类型',
   tags: ['WKT', 'GeoJSON', 'GML']
 }, {
+  title: '三维地形',
+  imgSrc: getHomeImg('terrain_show.png'),
+  path: 'https://chatgis.space/cesium-show/#/terrain-show',
+  desc: '基于Cesium的三维地形展示',
+  tags: ['Cesium', '地形']
+}, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
   path: '/gaode-online-tile',

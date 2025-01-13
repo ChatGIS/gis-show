@@ -144,7 +144,11 @@ const initMenus = () => {
  * @return {*}
  */
  const toPage = (path) => {
-  router.push(path)
+  if(path.indexOf('cesium-show') > -1) {
+    window.location.href = path
+  } else {
+    router.push(path)
+  }
 }
 </script>
 <style scoped>
