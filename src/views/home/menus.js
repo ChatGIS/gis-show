@@ -23,5 +23,11 @@ const menus = [{
   path: '/gaode-online-tile',
   desc: '展示各种类型的高德在线瓦片地图',
   tags: ['高德', '瓦片']
+}, {
+  title: 'MapLibre快速开始',
+  imgSrc: getHomeImg('ml-quick-start.png'),
+  path: '/ml-quick-start',
+  desc: 'MapLibre最简示例，用于快速了解学习',
+  tags: ['QuickStart']
 }]
 export default menus
