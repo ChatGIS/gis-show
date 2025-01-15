@@ -7,7 +7,7 @@ const getHomeImg = (url) => {
 }
 const menus = [{
   title: 'GIS数据类型',
-  imgSrc: getHomeImg('gaode-online-tile.png'),
+  imgSrc: getHomeImg('data-type.png'),
   path: '/data-type',
   desc: '绘制生成常用GIS数据类型',
   tags: ['WKT', 'GeoJSON', 'GML']
