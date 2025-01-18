@@ -1,8 +1,10 @@
 <template>
+  <el-watermark id="watermark-container" :content="['https://chatgis.space', '@ChatGIS']">
     <div id="mapContainer">
     </div>
     <SideNav/>
     <FooterInfo/>
+  </el-watermark>
 </template>
 <script setup>
 import { onMounted } from 'vue'

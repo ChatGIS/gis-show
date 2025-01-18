@@ -1,75 +1,77 @@
 
 <template>
-  <el-row id="map-row">
-    <el-col :span="3">
-      <div class="map-title">01标准版</div>
-      <div id="map-container1" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">04大字版(注记抽稀)</div>
-      <div id="map-container2" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">06大字版(注记未抽稀、无图标)</div>
-      <div id="map-container3" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">02老版本（新地物缺失、地图泛红）</div>
-      <div id="map-container4" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">05路网加注记</div>
-      <div id="map-container5" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">03影像</div>
-      <div id="map-container6" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">叠加版:03+05</div>
-      <div id="map-container7" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">叠加版:03+05去注记</div>
-      <div id="map-container8" class="map-container"></div>
-    </el-col>
-  </el-row>
-  <el-row id="map-row">
-    <el-col :span="3">
-      <div class="map-title">07只显示地块</div>
-      <div id="map-container21" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">08只显示路网</div>
-      <div id="map-container22" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">09地块+路网（无注记）</div>
-      <div id="map-container23" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">10只显示注记（大字抽稀版本）</div>
-      <div id="map-container24" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">11地块+注记（大字抽稀版本）</div>
-      <div id="map-container25" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">12路网+注记（大字抽稀版本）</div>
-      <div id="map-container26" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">13地块+路网+注记（大字抽稀版本）</div>
-      <div id="map-container27" class="map-container"></div>
-    </el-col>
-    <el-col :span="3">
-      <div class="map-title">英文版</div>
-      <div id="map-container28" class="map-container"></div>
-    </el-col>
-  </el-row>
-  <SideNav/>
-  <FooterInfo article="https://chatgis.space/post/0010/index.html"/>
+  <el-watermark id="watermark-container" :content="['https://chatgis.space', '@ChatGIS']">
+    <el-row id="map-row">
+      <el-col :span="3">
+        <div class="map-title">01标准版</div>
+        <div id="map-container1" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">04大字版(注记抽稀)</div>
+        <div id="map-container2" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">06大字版(注记未抽稀、无图标)</div>
+        <div id="map-container3" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">02老版本（新地物缺失、地图泛红）</div>
+        <div id="map-container4" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">05路网加注记</div>
+        <div id="map-container5" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">03影像</div>
+        <div id="map-container6" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">叠加版:03+05</div>
+        <div id="map-container7" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">叠加版:03+05去注记</div>
+        <div id="map-container8" class="map-container"></div>
+      </el-col>
+    </el-row>
+    <el-row id="map-row">
+      <el-col :span="3">
+        <div class="map-title">07只显示地块</div>
+        <div id="map-container21" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">08只显示路网</div>
+        <div id="map-container22" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">09地块+路网（无注记）</div>
+        <div id="map-container23" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">10只显示注记（大字抽稀版本）</div>
+        <div id="map-container24" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">11地块+注记（大字抽稀版本）</div>
+        <div id="map-container25" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">12路网+注记（大字抽稀版本）</div>
+        <div id="map-container26" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">13地块+路网+注记（大字抽稀版本）</div>
+        <div id="map-container27" class="map-container"></div>
+      </el-col>
+      <el-col :span="3">
+        <div class="map-title">英文版</div>
+        <div id="map-container28" class="map-container"></div>
+      </el-col>
+    </el-row>
+    <SideNav/>
+    <FooterInfo article="https://chatgis.space/post/0010/index.html"/>
+  </el-watermark>
 </template>
 <script setup>
 import 'ol/ol.css'

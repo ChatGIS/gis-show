@@ -1,59 +1,61 @@
 <template>
-  <div id="map" class="map"></div>
-  <el-card class="box-card">
-    <el-form :model="toolForm" label-width="auto" style="max-width: 600px">
-      <el-form-item label="绘制类型">
-        <el-select v-model="selectDrawType" class="m-2" v-on:change="selectChange">
-          <el-option v-for="item in toolForm.drawOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="开启捕捉">
-        <el-switch v-model="toolForm.isSnap" @change="snapSwitch" />
-      </el-form-item>
-      <el-form-item label="数据精度">
-        <el-input-number v-model="toolForm.decimalCoor" :min="0" :max="14" />
-      </el-form-item>
-      <el-form-item>
-        <el-button :type="isModify ? '' : 'primary'" @click="addInteractionModify">启动修改</el-button>
-        <el-button type="danger" @click="clearDrawLayer">清空数据</el-button>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="success" style="margin-left: 16px" @click="openDrawe">打开数据列表</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
-  <el-drawer v-model="isShowDrawer" :direction="directionDrawer">
-      <template #title>
-          <h4>数据列表</h4>
-      </template>
-      <template #default>
-          <el-collapse v-model="activeNameCollapse" accordion>
-              <el-collapse-item title="GeoJson" name="1">
-                  <el-input v-model="geojsonDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
-              </el-collapse-item>
-              <el-collapse-item title="WKT" name="2">
-                  <el-input v-model="wktDrawTextarea" :autosize="{ minRows: 8, maxRows: 8 }" type="textarea" />
-              </el-collapse-item>
-              <el-collapse-item title="坐标数组(可用于Turf)" name="3">
-                  <el-input v-model="coorArrayTextarea" :autosize="{ minRows: 8, maxRows: 8 }" type="textarea" />
-              </el-collapse-item>
-              <el-collapse-item title="EsriJson" name="4">
-                  <el-input v-model="esrijsonDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
-              </el-collapse-item>
-              <el-collapse-item title="GML" name="5">
-                  <el-input v-model="kmlDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
-              </el-collapse-item>
-          </el-collapse>
-      </template>
-      <template #footer>
-          <div style="flex: auto">
-              <el-button @click="closeDrawer">关闭</el-button>
-              <!-- <el-button type="primary" @click="downloadFile">下载(.geojson)</el-button> -->
-          </div>
-      </template>
-  </el-drawer>
-  <SideNav/>
-  <FooterInfo/>
+  <el-watermark id="watermark-container" :content="['https://chatgis.space', '@ChatGIS']">
+    <div id="map" class="map"></div>
+    <el-card class="box-card">
+      <el-form :model="toolForm" label-width="auto" style="max-width: 600px">
+        <el-form-item label="绘制类型">
+          <el-select v-model="selectDrawType" class="m-2" v-on:change="selectChange">
+            <el-option v-for="item in toolForm.drawOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="开启捕捉">
+          <el-switch v-model="toolForm.isSnap" @change="snapSwitch" />
+        </el-form-item>
+        <el-form-item label="数据精度">
+          <el-input-number v-model="toolForm.decimalCoor" :min="0" :max="14" />
+        </el-form-item>
+        <el-form-item>
+          <el-button :type="isModify ? '' : 'primary'" @click="addInteractionModify">启动修改</el-button>
+          <el-button type="danger" @click="clearDrawLayer">清空数据</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" style="margin-left: 16px" @click="openDrawe">打开数据列表</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <el-drawer v-model="isShowDrawer" :direction="directionDrawer">
+        <template #title>
+            <h4>数据列表</h4>
+        </template>
+        <template #default>
+            <el-collapse v-model="activeNameCollapse" accordion>
+                <el-collapse-item title="GeoJson" name="1">
+                    <el-input v-model="geojsonDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
+                </el-collapse-item>
+                <el-collapse-item title="WKT" name="2">
+                    <el-input v-model="wktDrawTextarea" :autosize="{ minRows: 8, maxRows: 8 }" type="textarea" />
+                </el-collapse-item>
+                <el-collapse-item title="坐标数组(可用于Turf)" name="3">
+                    <el-input v-model="coorArrayTextarea" :autosize="{ minRows: 8, maxRows: 8 }" type="textarea" />
+                </el-collapse-item>
+                <el-collapse-item title="EsriJson" name="4">
+                    <el-input v-model="esrijsonDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
+                </el-collapse-item>
+                <el-collapse-item title="GML" name="5">
+                    <el-input v-model="kmlDrawTextarea" :autosize="{ minRows: 8, maxRows: 16 }" type="textarea" />
+                </el-collapse-item>
+            </el-collapse>
+        </template>
+        <template #footer>
+            <div style="flex: auto">
+                <el-button @click="closeDrawer">关闭</el-button>
+                <!-- <el-button type="primary" @click="downloadFile">下载(.geojson)</el-button> -->
+            </div>
+        </template>
+    </el-drawer>
+    <SideNav/>
+    <FooterInfo/>
+  </el-watermark>
 </template>
 <script setup>
 import 'ol/ol.css'
@@ -193,7 +195,8 @@ function closeDrawer() {
 } */
 </script>
 <style scoped>
-.map {
+
+#map {
     width: 100%;
     height: 100%;
 }

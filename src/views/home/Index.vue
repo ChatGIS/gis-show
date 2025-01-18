@@ -1,4 +1,5 @@
 <template>
+  <el-watermark id="watermark-container" :content="['https://chatgis.space', '@ChatGIS']">
     <div id="home-container" :style="'background-image:url(' + imgBackground + ')'">
         <el-image style="width: 100px; height: 100px" :src="imgProjectIcon" fit="fill"/>
         <div class='title-container'>
@@ -30,6 +31,7 @@
         <side-nav/>
         <footer-info/>
     </div>
+  </el-watermark>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
