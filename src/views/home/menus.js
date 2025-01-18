@@ -30,6 +30,12 @@ const menus = [{
   desc: '展示各种类型的高德在线瓦片地图',
   tags: ['高德', '瓦片']
 }, {
+  title: '自定义材质',
+  imgSrc: getHomeImg('custom-material.png'),
+  path: 'https://chatgis.space/cesium-show/#/custom-material',
+  desc: 'Cesium自定义材质示例',
+  tags: ['Cesium', '材质', 'QuickStart']
+}, {
   title: 'MapLibre快速开始',
   imgSrc: getHomeImg('ml-quick-start.png'),
   path: '/ml-quick-start',
