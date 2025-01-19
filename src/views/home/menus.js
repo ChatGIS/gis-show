@@ -24,6 +24,12 @@ const menus = [{
   desc: '基于Cesium的三维地形展示',
   tags: ['Cesium', '地形']
 }, {
+  title: '圆形波纹扩散',
+  imgSrc: getHomeImg('circle-wave.png'),
+  path: 'https://chatgis.space/cesium-show/#/circle-wave',
+  desc: 'Cesium自定义特效样式',
+  tags: ['Cesium', '特效', '待开放']
+}, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
   path: '/gaode-online-tile',
