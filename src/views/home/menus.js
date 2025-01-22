@@ -26,9 +26,15 @@ const menus = [{
 }, {
   title: '圆形波纹扩散',
   imgSrc: getHomeImg('circle-wave.png'),
-  path: 'https://chatgis.space/cesium-show/#/circle-wave',
+  path: 'https://chatgis.space/cesium-show/#/circle-wave-demo',
   desc: 'Cesium自定义特效样式',
-  tags: ['Cesium', '特效', '待开放']
+  tags: ['Cesium', '特效', 'demo']
+}, {
+  title: '六边形扩散',
+  imgSrc: getHomeImg('hexagon-spread.png'),
+  path: 'https://chatgis.space/cesium-show/#/hexagon-spread-demo',
+  desc: 'Cesium自定义特效样式',
+  tags: ['Cesium', '特效', 'demo']
 }, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
