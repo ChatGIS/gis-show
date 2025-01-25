@@ -36,6 +36,12 @@ const menus = [{
   desc: 'Cesium自定义特效样式',
   tags: ['Cesium', '特效', 'demo']
 }, {
+  title: '单圈扩散',
+  imgSrc: getHomeImg('scanline.png'),
+  path: 'https://chatgis.space/cesium-show/#/scanline-demo',
+  desc: '单圈扩散、边缘暂停效果',
+  tags: ['Cesium', '特效', 'demo']
+}, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
   path: '/gaode-online-tile',
