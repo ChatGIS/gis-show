@@ -120,25 +120,25 @@ const initMenus = () => {
   // 根据标签过滤菜单
   const menuFilter = []
   menus.forEach((item, index) => {
-    const row = Math.floor(index / 4)
-    if (!menuFilter[row]) {
-      menuFilter[row] = []
-    }
     let set = new Set(selectedTags)
     let hasEqualElement = item.tags.some((element) => {
       return set.has(element)
     })
     if(hasEqualElement) {
-      menuFilter[row].push(item)
+      menuFilter.push(item)
     }
   })
-  menuRow.value = menuFilter
-  // 统计菜单数量
-  let count = 0
-  for (let i = 0; i < menuFilter.length; i++) {
-    count += menuFilter[i].length
-  }
-  menuNum.value = count
+  menuNum.value = menuFilter.length
+  // 再分行列
+  const menuArr = []
+  menuFilter.forEach((item, index) => {
+    const row = Math.floor(index / 4)
+    if (!menuArr[row]) {
+      menuArr[row] = []
+    }
+    menuArr[row].push(item)
+  })
+  menuRow.value = menuArr
 }
 /**
  * @description: 跳转页面
