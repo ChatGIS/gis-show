@@ -30,6 +30,12 @@ const menus = [{
   desc: 'Cesium自定义特效样式',
   tags: ['Cesium', '特效', 'demo']
 }, {
+  title: '动态尾迹线',
+  imgSrc: getHomeImg('polyline-trail.png'),
+  path: 'https://chatgis.space/cesium-show/#/polyline-trail-demo',
+  desc: 'Cesium自定义特效样式',
+  tags: ['Cesium', '特效', 'demo']
+}, {
   title: '六边形扩散',
   imgSrc: getHomeImg('hexagon-spread.png'),
   path: 'https://chatgis.space/cesium-show/#/hexagon-spread-demo',
