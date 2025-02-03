@@ -48,6 +48,12 @@ const menus = [{
   desc: '单圈扩散、边缘暂停效果',
   tags: ['Cesium', '特效', 'demo']
 }, {
+  title: '动态围栏',
+  imgSrc: getHomeImg('dynamic-wall.png'),
+  path: 'https://chatgis.space/cesium-show/#/dynamic-wall-demo',
+  desc: '动态围栏效果',
+  tags: ['Cesium', '特效', 'demo']
+}, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
   path: '/gaode-online-tile',
