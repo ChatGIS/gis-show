@@ -2,6 +2,7 @@
  * @description: 菜单
  * @return {*}
  */
+const cesiumBaseURL = 'https://chatgis.space/cesium-show/#'
 const getHomeImg = (url) => {
   return new URL(`../../assets/images/home/${url}`, import.meta.url).href
 }
@@ -14,43 +15,43 @@ const menus = [{
 }, {
   title: '三维相机参数',
   imgSrc: getHomeImg('camera-param.png'),
-  path: 'https://chatgis.space/cesium-show/#/camera-param',
+  path: cesiumBaseURL + '/camera-param',
   desc: '基于Cesium的三维地形展示',
   tags: ['Cesium', '相机']
 }, {
   title: '三维地形',
   imgSrc: getHomeImg('terrain_show.png'),
-  path: 'https://chatgis.space/cesium-show/#/terrain-show',
+  path: cesiumBaseURL + '/terrain-show',
   desc: '基于Cesium的三维地形展示',
   tags: ['Cesium', '地形']
 }, {
   title: '圆形波纹扩散',
   imgSrc: getHomeImg('circle-wave.png'),
-  path: 'https://chatgis.space/cesium-show/#/circle-wave-demo',
+  path: cesiumBaseURL + '/circle-wave-demo',
   desc: 'Cesium自定义特效样式',
   tags: ['Cesium', '特效', 'demo']
 }, {
   title: '动态尾迹线',
   imgSrc: getHomeImg('polyline-trail.png'),
-  path: 'https://chatgis.space/cesium-show/#/polyline-trail-demo',
+  path: cesiumBaseURL + '/polyline-trail-demo',
   desc: 'Cesium自定义特效样式',
   tags: ['Cesium', '特效', 'demo']
 }, {
   title: '六边形扩散',
   imgSrc: getHomeImg('hexagon-spread.png'),
-  path: 'https://chatgis.space/cesium-show/#/hexagon-spread-demo',
+  path: cesiumBaseURL + '/hexagon-spread-demo',
   desc: 'Cesium自定义特效样式',
   tags: ['Cesium', '特效', 'demo']
 }, {
   title: '单圈扩散',
   imgSrc: getHomeImg('scanline.png'),
-  path: 'https://chatgis.space/cesium-show/#/scanline-demo',
+  path: cesiumBaseURL + '/scanline-demo',
   desc: '单圈扩散、边缘暂停效果',
   tags: ['Cesium', '特效', 'demo']
 }, {
   title: '动态围栏',
   imgSrc: getHomeImg('dynamic-wall.png'),
-  path: 'https://chatgis.space/cesium-show/#/dynamic-wall-demo',
+  path: cesiumBaseURL + '/dynamic-wall-demo',
   desc: '动态围栏效果',
   tags: ['Cesium', '特效', 'demo']
 }, {
@@ -62,7 +63,7 @@ const menus = [{
 }, {
   title: '自定义材质',
   imgSrc: getHomeImg('custom-material.png'),
-  path: 'https://chatgis.space/cesium-show/#/custom-material',
+  path: cesiumBaseURL + '/custom-material',
   desc: 'Cesium自定义材质示例',
   tags: ['Cesium', '材质', 'QuickStart']
 }, {
