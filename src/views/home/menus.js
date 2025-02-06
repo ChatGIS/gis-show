@@ -55,6 +55,12 @@ const menus = [{
   desc: '动态围栏效果',
   tags: ['Cesium', '特效', 'demo']
 }, {
+  title: '3DTiles展示',
+  imgSrc: getHomeImg('3dtileset-show.png'),
+  path: cesiumBaseURL + '/3dtileset-show-demo',
+  desc: '白膜数据呈现',
+  tags: ['Cesium', '特效', 'demo']
+}, {
   title: '高德在线瓦片',
   imgSrc: getHomeImg('gaode-online-tile.png'),
   path: '/gaode-online-tile',
