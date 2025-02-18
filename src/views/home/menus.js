@@ -13,6 +13,12 @@ const menus = [{
   desc: '绘制生成常用GIS数据类型',
   tags: ['WKT', 'GeoJSON', 'GML']
 }, {
+  title: '热力图',
+  imgSrc: getHomeImg('heatmap.png'),
+  path: '/heatmap',
+  desc: '基于OpenLayers的热力图展示',
+  tags: ['OL', '热力图']
+}, {
   title: '三维相机参数',
   imgSrc: getHomeImg('camera-param.png'),
   path: cesiumBaseURL + '/camera-param',
