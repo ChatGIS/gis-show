@@ -1,6 +1,8 @@
-
 <template>
-  <el-watermark id="watermark-container" :content="['https://chatgis.space', '@ChatGIS']">
+  <el-watermark
+    id="watermark-container"
+    :content="['https://chatgis.space', '@ChatGIS']"
+  >
     <el-row id="map-row">
       <el-col :span="3">
         <div class="map-title">01标准版</div>
@@ -69,8 +71,8 @@
         <div id="map-container28" class="map-container"></div>
       </el-col>
     </el-row>
-    <SideNav/>
-    <FooterInfo article="https://chatgis.space/post/0010/index.html"/>
+    <SideNav />
+    <FooterInfo article="https://chatgis.space/post/0010/index.html" />
   </el-watermark>
 </template>
 <script setup>
@@ -91,7 +93,7 @@ onMounted(() => {
   const view = new View({
     center: mapObj.center,
     zoom: mapObj.zoom,
-    projection: 'EPSG:4326',
+    projection: 'EPSG:4326'
   })
   new Map({
     layers: [gaodeTileLayer1],
