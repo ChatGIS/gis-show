@@ -22,6 +22,11 @@ const routes = [
     component: () => import('@/views/openlayers/DataType.vue')
   },
   {
+    name: 'MapColor',
+    path: '/map-color',
+    component: () => import('@/views/openlayers/MapColor.vue')
+  },
+  {
     name: 'Heatmap',
     path: '/heatmap',
     component: () => import('@/views/openlayers/HeatMap.vue')

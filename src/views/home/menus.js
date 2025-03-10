@@ -15,6 +15,13 @@ const menus = [
     tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
+    title: '地图颜色',
+    imgSrc: getHomeImg('map-color.png'),
+    path: '/map-color',
+    desc: '图层滤镜实现地图瓦片颜色',
+    tags: ['OL', '大屏']
+  },
+  {
     title: '热力图',
     imgSrc: getHomeImg('heatmap.png'),
     path: '/heatmap',
