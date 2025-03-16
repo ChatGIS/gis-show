@@ -98,7 +98,7 @@
 <script setup>
 import 'ol/ol.css'
 import { Map, View } from 'ol'
-import { XYZ, Vector as VectorSource } from 'ol/source'
+import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import { Draw, Modify, Snap } from 'ol/interaction'
 import { GeoJSON, WKT, EsriJSON, KML } from 'ol/format'
@@ -133,7 +133,7 @@ const toolForm = reactive({
 })
 let map = new Map({})
 const gaodeTileLayer = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     projection: gcjMecator,
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
   })

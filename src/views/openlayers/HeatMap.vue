@@ -54,7 +54,7 @@
 import 'ol/ol.css'
 import { Map, View } from 'ol'
 import { Tile as TileLayer, Heatmap as HeatmapLayer } from 'ol/layer'
-import { XYZ, Vector as VectorSource } from 'ol/source'
+import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
 import Feature from 'ol/Feature'
 import Point from 'ol/geom/Point'
 import { onMounted, ref } from 'vue'
@@ -124,7 +124,7 @@ heatmapLayer = new HeatmapLayer({
 
 // 创建底图图层
 const baseLayer = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
   })
 })

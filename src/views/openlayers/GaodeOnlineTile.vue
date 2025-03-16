@@ -79,7 +79,7 @@
 import 'ol/ol.css'
 import { Map, View } from 'ol'
 import { Tile as TileLayer } from 'ol/layer'
-import { XYZ } from 'ol/source'
+import { ImageTile as ImageTileSource } from 'ol/source'
 import { onMounted } from 'vue'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
@@ -179,88 +179,88 @@ onMounted(() => {
 
 // 高德瓦片
 const gaodeTileLayer1 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'
   })
 })
 
 const gaodeTileLayer2 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer3 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=9&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer4 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=7&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer5 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=8&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer51 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=8&x={x}&y={y}&z={z}&scl=2'
   })
 })
 const gaodeTileLayer6 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer7 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer8 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
   })
 })
 const gaodeTileLayer21 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=1'
   })
 })
 const gaodeTileLayer22 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=2'
   })
 })
 const gaodeTileLayer23 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=3'
   })
 })
 const gaodeTileLayer24 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=4'
   })
 })
 const gaodeTileLayer25 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=5'
   })
 })
 const gaodeTileLayer26 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=6'
   })
 })
 const gaodeTileLayer27 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}&ltype=7'
   })
 })
 const gaodeTileLayer28 = new TileLayer({
-  source: new XYZ({
+  source: new ImageTileSource({
     url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=en&size=1&style=7&x={x}&y={y}&z={z}&ltype=7'
   })
 })
