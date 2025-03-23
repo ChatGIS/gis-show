@@ -7,6 +7,11 @@ const routes = [
     component: () => import('@/views/home/Index.vue')
   },
   {
+    name: 'CoorPickConvert',
+    path: '/coor-pick-convert',
+    component: () => import('@/views/openlayers/CoorPickConvert.vue')
+  },
+  {
     name: 'MLQuickStart',
     path: '/ml-quick-start',
     component: () => import('@/views/maplibre/QuickStart.vue')

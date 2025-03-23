@@ -8,6 +8,13 @@ const getHomeImg = (url) => {
 }
 const menus = [
   {
+    title: '坐标拾取和转换',
+    imgSrc: getHomeImg('data-type.png'),
+    path: '/coor-pick-convert',
+    desc: '坐标拾取与常见坐标转换',
+    tags: ['OL', '坐标转换']
+  },
+  {
     title: 'GIS数据类型',
     imgSrc: getHomeImg('data-type.png'),
     path: '/data-type',
