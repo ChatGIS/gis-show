@@ -13,10 +13,7 @@
         <el-tabs v-model="activeTab">
           <!-- 坐标拾取 -->
           <el-tab-pane label="坐标拾取" name="tabPick">
-            <el-form
-              :model="formPick"
-              label-width="auto"
-            >
+            <el-form :model="formPick" label-width="auto">
               <el-form-item label="坐标精度">
                 <el-input-number
                   size="small"
@@ -82,7 +79,10 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="输入坐标">
-                <el-input v-model="formInput.coordinateInput" placeholder="支持格式：经度, 纬度" />
+                <el-input
+                  v-model="formInput.coordinateInput"
+                  placeholder="支持格式：经度, 纬度"
+                />
               </el-form-item>
               <el-form-item label="高德坐标">
                 <el-input
@@ -130,13 +130,19 @@
 
 <script setup>
 import 'ol/ol.css'
-import { Map, View } from 'ol'
-import { Tile as TileLayer } from 'ol/layer'
-import { ImageTile as ImageTileSource } from 'ol/source'
+import { Map, View, Feature } from 'ol'
+import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
+import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
+import { Point } from 'ol/geom'
 import { ref, onMounted } from 'vue'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 import { ElMessage } from 'element-plus'
+import * as huanyu from 'huanyu'
+import imageBlue from '@/assets/images/locate-blue.png'
+import imageRed from '@/assets/images/locate-red.png'
+import imageGreen from '@/assets/images/locate-green.png'
+import { Style, Icon, Text, Fill } from 'ol/style'
 
 const center = [117.01533, 36.661184]
 let map = null
@@ -155,15 +161,56 @@ const formInput = ref({
   coordinateBD09: '',
   coordinateWGS84: ''
 })
-
+// 定位图层
+const locateSource = new VectorSource({})
+const locateLayer = new VectorLayer({
+  source: locateSource
+})
+/**
+ * 获取定位图标样式
+ * @param typeText 类型文本
+ */
+const getLocateStyle = (typeText) => {
+  let imageSrc = imageBlue
+  let colorBackground = '#0C86E3'
+  if (typeText === 'BD09') {
+    imageSrc = imageGreen
+    colorBackground = '#30AD98'
+  } else if (typeText === 'WGS84') {
+    imageSrc = imageRed
+    colorBackground = '#E16531'
+  }
+  return new Style({
+    image: new Icon({
+      src: imageSrc,
+      size: [64, 64],
+      offset: [-17, -5]
+    }),
+    text: new Text({
+      text: typeText,
+      font: '15px sans-serif',
+      offsetX: -3,
+      offsetY: -38,
+      fill: new Fill({
+        color: 'white'
+      }),
+      backgroundFill: new Fill({
+        color: colorBackground
+      })
+    })
+  })
+}
 // 复制坐标到剪贴板
 const copyCoordinates = (coordinates) => {
   const text = Array.isArray(coordinates) ? coordinates.join(',') : coordinates
-  navigator.clipboard.writeText(text).then(() => {
-    ElMessage.success('坐标已复制到剪贴板')
-  }).catch((err) => {
-    ElMessage.error('复制失败')
-  })
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      ElMessage.success('坐标已复制到剪贴板')
+    })
+    .catch((err) => {
+      ElMessage.error('复制失败')
+    })
 }
 // 初始化地图
 onMounted(() => {
@@ -175,7 +222,7 @@ onMounted(() => {
 
   map = new Map({
     target: 'map-container',
-    layers: [baseLayer],
+    layers: [baseLayer, locateLayer],
     view: new View({
       center: center,
       zoom: 12,
@@ -185,12 +232,34 @@ onMounted(() => {
 
   // 添加点击事件监听
   map.on('click', (evt) => {
-    const coordinatePicked = evt.coordinate.map((coord) =>
-      coord.toFixed(formPick.value.coorDecimal)
+    const coordinatePicked = evt.coordinate
+    const coordWGS84 = huanyu.convertGCJ02ToWGS84(
+      coordinatePicked[0],
+      coordinatePicked[1]
     )
-    formPick.value.coordinateGCJ02 = `${coordinatePicked[0]}, ${coordinatePicked[1]}`
-    formPick.value.coordinateBD09 = `${coordinatePicked[0]}, ${coordinatePicked[1]}`
-    formPick.value.coordinateWGS84 = `${coordinatePicked[0]}, ${coordinatePicked[1]}`
+    const coordBD09 = huanyu.convertGCJ02ToBD09(
+      coordinatePicked[0],
+      coordinatePicked[1]
+    )
+    formPick.value.coordinateGCJ02 = `${coordinatePicked[0].toFixed(formPick.value.coorDecimal)}, ${coordinatePicked[1].toFixed(formPick.value.coorDecimal)}`
+    formPick.value.coordinateBD09 = `${coordBD09.lon.toFixed(formPick.value.coorDecimal)}, ${coordBD09.lat.toFixed(formPick.value.coorDecimal)}`
+    formPick.value.coordinateWGS84 = `${coordWGS84.lon.toFixed(formPick.value.coorDecimal)}, ${coordWGS84.lat.toFixed(formPick.value.coorDecimal)}`
+    const featureGCJ02 = new Feature(new Point(coordinatePicked))
+    const featureBD09 = new Feature(new Point([coordBD09.lon, coordBD09.lat]))
+    const featureWGS84 = new Feature(
+      new Point([coordWGS84.lon, coordWGS84.lat])
+    )
+    featureGCJ02.setStyle(getLocateStyle('GCJ02'))
+    featureBD09.setStyle(getLocateStyle('BD09'))
+    featureWGS84.setStyle(getLocateStyle('WGS84'))
+    locateSource.clear()
+    locateSource.addFeatures([featureGCJ02, featureBD09, featureWGS84])
+    if (map.getView().getZoom() < 16) {
+      map.getView().animate({
+        center: coordinatePicked,
+        zoom: 16
+      })
+    }
   })
 })
 </script>

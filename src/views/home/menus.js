@@ -9,7 +9,7 @@ const getHomeImg = (url) => {
 const menus = [
   {
     title: '坐标拾取和转换',
-    imgSrc: getHomeImg('data-type.png'),
+    imgSrc: getHomeImg('coor-pick-convert.png'),
     path: '/coor-pick-convert',
     desc: '坐标拾取与常见坐标转换',
     tags: ['OL', '坐标转换']
