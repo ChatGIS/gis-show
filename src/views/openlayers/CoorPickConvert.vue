@@ -71,7 +71,7 @@
                   :max="14"
                 />
               </el-form-item>
-              <el-form-item label="坐标类型">
+              <el-form-item label="坐标类型" @change="convertCoordinateByType">
                 <el-radio-group v-model="formInput.type">
                   <el-radio label="gcj02">高德</el-radio>
                   <el-radio label="wgs84">八四</el-radio>
@@ -82,6 +82,7 @@
                 <el-input
                   v-model="formInput.coordinateInput"
                   placeholder="支持格式：经度, 纬度"
+                  @input="handleInputCoordinate"
                 />
               </el-form-item>
               <el-form-item label="高德坐标">
@@ -149,7 +150,6 @@ let map = null
 const activeTab = ref('tabPick')
 const formPick = ref({
   coorDecimal: 6,
-  coordinateInput: '',
   coordinateGCJ02: '',
   coordinateBD09: '',
   coordinateWGS84: ''
@@ -157,6 +157,7 @@ const formPick = ref({
 const formInput = ref({
   type: 'gcj02',
   coorDecimal: 6,
+  coordinateInput: '',
   coordinateGCJ02: '',
   coordinateBD09: '',
   coordinateWGS84: ''
@@ -232,36 +233,100 @@ onMounted(() => {
 
   // 添加点击事件监听
   map.on('click', (evt) => {
-    const coordinatePicked = evt.coordinate
-    const coordWGS84 = huanyu.convertGCJ02ToWGS84(
-      coordinatePicked[0],
-      coordinatePicked[1]
-    )
-    const coordBD09 = huanyu.convertGCJ02ToBD09(
-      coordinatePicked[0],
-      coordinatePicked[1]
-    )
-    formPick.value.coordinateGCJ02 = `${coordinatePicked[0].toFixed(formPick.value.coorDecimal)}, ${coordinatePicked[1].toFixed(formPick.value.coorDecimal)}`
-    formPick.value.coordinateBD09 = `${coordBD09.lon.toFixed(formPick.value.coorDecimal)}, ${coordBD09.lat.toFixed(formPick.value.coorDecimal)}`
-    formPick.value.coordinateWGS84 = `${coordWGS84.lon.toFixed(formPick.value.coorDecimal)}, ${coordWGS84.lat.toFixed(formPick.value.coorDecimal)}`
-    const featureGCJ02 = new Feature(new Point(coordinatePicked))
-    const featureBD09 = new Feature(new Point([coordBD09.lon, coordBD09.lat]))
-    const featureWGS84 = new Feature(
-      new Point([coordWGS84.lon, coordWGS84.lat])
-    )
-    featureGCJ02.setStyle(getLocateStyle('GCJ02'))
-    featureBD09.setStyle(getLocateStyle('BD09'))
-    featureWGS84.setStyle(getLocateStyle('WGS84'))
-    locateSource.clear()
-    locateSource.addFeatures([featureGCJ02, featureBD09, featureWGS84])
-    if (map.getView().getZoom() < 16) {
-      map.getView().animate({
-        center: coordinatePicked,
-        zoom: 16
-      })
+    if (activeTab.value == 'tabPick') {
+      const coordinatePicked = evt.coordinate
+      const coordWGS84 = huanyu.convertGCJ02ToWGS84(
+        coordinatePicked[0],
+        coordinatePicked[1]
+      )
+      const coordBD09 = huanyu.convertGCJ02ToBD09(
+        coordinatePicked[0],
+        coordinatePicked[1]
+      )
+      formPick.value.coordinateGCJ02 = `${coordinatePicked[0].toFixed(formPick.value.coorDecimal)}, ${coordinatePicked[1].toFixed(formPick.value.coorDecimal)}`
+      formPick.value.coordinateBD09 = `${coordBD09.lon.toFixed(formPick.value.coorDecimal)}, ${coordBD09.lat.toFixed(formPick.value.coorDecimal)}`
+      formPick.value.coordinateWGS84 = `${coordWGS84.lon.toFixed(formPick.value.coorDecimal)}, ${coordWGS84.lat.toFixed(formPick.value.coorDecimal)}`
+      handleMapPointDisplay()
+      return
+    } else {
+      ElMessage.warning('如需拾取坐标请切换到【坐标拾取】功能页。')
     }
   })
 })
+/**
+ * 处理输入的坐标变化事件
+ * @param coordinate 坐标文本
+ */
+const handleInputCoordinate = (coordinate) => {
+  coordinate = coordinate.trim()
+  const regex = /^\d+(\.\d+)?\s*,\s*\d+(\.\d+)?$/
+  const isValid = regex.test(coordinate)
+  if (isValid) {
+    convertCoordinateByType()
+  } else {
+    ElMessage.warning('请输入正确的坐标格式')
+    return
+  }
+}
+const convertCoordinateByType = () => {
+  const parts = formInput.value.coordinateInput.split(/[,\s]+/)
+  const lon = parseFloat(parts[0])
+  const lat = parseFloat(parts[1])
+  let coordGCJ02, coordBD09, coordWGS84
+  if (formInput.value.type === 'gcj02') {
+    coordGCJ02 = { lon, lat }
+    coordBD09 = huanyu.convertGCJ02ToBD09(lon, lat)
+    coordWGS84 = huanyu.convertGCJ02ToWGS84(lon, lat)
+  } else if (formInput.value.type === 'bd09') {
+    coordBD09 = { lon, lat }
+    coordGCJ02 = huanyu.convertBD09ToGCJ02(lon, lat)
+    coordWGS84 = huanyu.convertBD09ToWGS84(lon, lat)
+  } else if (formInput.value.type === 'wgs84') {
+    coordWGS84 = { lon, lat }
+    coordGCJ02 = huanyu.convertWGS84ToGCJ02(lon, lat)
+    coordBD09 = huanyu.convertWGS84ToBD09(lon, lat)
+  }
+  formInput.value.coordinateGCJ02 = `${coordGCJ02.lon.toFixed(formInput.value.coorDecimal)}, ${coordGCJ02.lat.toFixed(formInput.value.coorDecimal)}`
+  formInput.value.coordinateBD09 = `${coordBD09.lon.toFixed(formInput.value.coorDecimal)}, ${coordBD09.lat.toFixed(formInput.value.coorDecimal)}`
+  formInput.value.coordinateWGS84 = `${coordWGS84.lon.toFixed(formInput.value.coorDecimal)}, ${coordWGS84.lat.toFixed(formInput.value.coorDecimal)}`
+  handleMapPointDisplay()
+}
+/**
+ * 处理地图上的点的显示
+ */
+const handleMapPointDisplay = () => {
+  let coordinateGCJ02, coordinateBD09, coordinateWGS84
+  if (activeTab.value === 'tabPick') {
+    coordinateGCJ02 = formPick.value.coordinateGCJ02.split(',')
+    coordinateBD09 = formPick.value.coordinateBD09.split(',')
+    coordinateWGS84 = formPick.value.coordinateWGS84.split(',')
+  } else {
+    coordinateGCJ02 = formInput.value.coordinateGCJ02.split(',')
+    coordinateBD09 = formInput.value.coordinateBD09.split(',')
+    coordinateWGS84 = formInput.value.coordinateWGS84.split(',')
+  }
+  const featureGCJ02 = new Feature(new Point(coordinateGCJ02))
+  const featureBD09 = new Feature(new Point(coordinateBD09))
+  const featureWGS84 = new Feature(new Point(coordinateWGS84))
+  featureGCJ02.setStyle(getLocateStyle('GCJ02'))
+  featureBD09.setStyle(getLocateStyle('BD09'))
+  featureWGS84.setStyle(getLocateStyle('WGS84'))
+  locateSource.clear()
+  locateSource.addFeatures([featureGCJ02, featureBD09, featureWGS84])
+  if (activeTab.value === 'tabPick') {
+    if (map.getView().getZoom() < 16) {
+      map.getView().animate({
+        center: coordinateGCJ02,
+        zoom: 16
+      })
+    }
+  } else {
+    map.getView().animate({
+      center: coordinateGCJ02,
+      zoom: 16
+    })
+  }
+}
 </script>
 
 <style scoped>
