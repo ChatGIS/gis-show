@@ -71,7 +71,7 @@
                   :max="14"
                 />
               </el-form-item>
-              <el-form-item label="坐标类型" @change="convertCoordinateByType">
+              <el-form-item label="坐标类型" @change="changeCoordinateType">
                 <el-radio-group v-model="formInput.type">
                   <el-radio label="gcj02">高德</el-radio>
                   <el-radio label="wgs84">八四</el-radio>
@@ -81,7 +81,7 @@
               <el-form-item label="输入坐标">
                 <el-input
                   v-model="formInput.coordinateInput"
-                  placeholder="支持格式：经度, 纬度"
+                  placeholder="支持格式：lon, lat、lon lat、POINT(lon lat)"
                   @input="handleInputCoordinate"
                 />
               </el-form-item>
@@ -259,19 +259,27 @@ onMounted(() => {
  */
 const handleInputCoordinate = (coordinate) => {
   coordinate = coordinate.trim()
-  const regex = /^\d+(\.\d+)?\s*,\s*\d+(\.\d+)?$/
+  const match = coordinate.match(/^point\s*\(([^)]+)\)$/i);
+  if (match) {
+    // 符合正则表达式，match[1] 是括号内内容
+    coordinate = match[1];
+  } 
+  const regex = /^-?\d+(\.\d+)?[\s,]+-?\d+(\.\d+)?$/
   const isValid = regex.test(coordinate)
   if (isValid) {
-    convertCoordinateByType()
+    const parts = coordinate.split(/[,\s]+/)
+    const lon = parseFloat(parts[0])
+    const lat = parseFloat(parts[1])
+    convertCoordinateByType(lon, lat)
   } else {
     ElMessage.warning('请输入正确的坐标格式')
     return
   }
 }
-const convertCoordinateByType = () => {
-  const parts = formInput.value.coordinateInput.split(/[,\s]+/)
-  const lon = parseFloat(parts[0])
-  const lat = parseFloat(parts[1])
+const changeCoordinateType = () => {
+  handleInputCoordinate(formInput.value.coordinateInput)
+}
+const convertCoordinateByType = (lon, lat) => {
   let coordGCJ02, coordBD09, coordWGS84
   if (formInput.value.type === 'gcj02') {
     coordGCJ02 = { lon, lat }
