@@ -86,6 +86,11 @@
       </template>
       <template #footer>
         <div style="flex: auto">
+          <el-button
+            class="btn-copy"
+            @click="copyGeometryData()"
+            >复制</el-button
+          >
           <el-button @click="closeDrawer">关闭</el-button>
           <!-- <el-button type="primary" @click="downloadFile">下载(.geojson)</el-button> -->
         </div>
@@ -241,6 +246,31 @@ function closeDrawer() {
   var file = new File([geojsonDrawTextarea.value], 'GeoJsonDraw.geojson', { type: 'text/plain;charset=utf-8' })
   saveAs(file)
 } */
+/**
+ * 复制空间数据
+ */
+const copyGeometryData = () => {
+  let text = ''
+  if (activeNameCollapse.value == '1') {
+    text = geojsonDrawTextarea.value
+  } else if (activeNameCollapse.value == '2') {
+    text = wktDrawTextarea.value
+  } else if (activeNameCollapse.value == '3') {
+    text = coorArrayTextarea.value
+  } else if (activeNameCollapse.value == '4') {
+    text = esrijsonDrawTextarea.value
+  } else if (activeNameCollapse.value == '5') {
+    text = kmlDrawTextarea.value
+  }
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      ElMessage.success('数据已复制到剪贴板')
+    })
+    .catch((err) => {
+      ElMessage.error('复制失败')
+    })
+}
 </script>
 <style scoped>
 #map {
