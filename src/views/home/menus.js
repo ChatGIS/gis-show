@@ -99,6 +99,13 @@ const menus = [
     tags: ['高德', '瓦片']
   },
   {
+    title: '页面嵌入',
+    imgSrc: getHomeImg('custom-material.png'),
+    path: '/embed-page-parent',
+    desc: 'Cesium自定义材质示例',
+    tags: ['Cesium', '材质', 'QuickStart']
+  },
+  {
     title: '自定义材质',
     imgSrc: getHomeImg('custom-material.png'),
     path: cesiumBaseURL + '/custom-material',

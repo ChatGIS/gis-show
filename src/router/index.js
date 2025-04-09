@@ -35,6 +35,16 @@ const routes = [
     name: 'Heatmap',
     path: '/heatmap',
     component: () => import('@/views/openlayers/HeatMap.vue')
+  },
+  {
+    name: 'EmbedPage',
+    path: '/embed-page',
+    component: () => import('@/views/openlayers/EmbedPage.vue')
+  },
+  {
+    name: 'EmbedPageParent',
+    path: '/embed-page-parent',
+    component: () => import('@/views/openlayers/EmbedPageParent.vue')
   }
 ]
 
