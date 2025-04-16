@@ -1,7 +1,7 @@
 {
   "name": "gis-show",
   "private": true,
-  "version": "1.13.6",
+  "version": "1.14.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "element-plus": "^2.9.2",
+    "element-plus": "^2.10.2",
     "huanyu": "^1.7.0",
     "maplibre-gl": "^5.0.1",
     "ol": "^10.3.1",
