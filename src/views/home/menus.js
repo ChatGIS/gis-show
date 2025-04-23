@@ -100,10 +100,10 @@ const menus = [
   },
   {
     title: '页面嵌入',
-    imgSrc: getHomeImg('custom-material.png'),
+    imgSrc: getHomeImg('embed-page.png'),
     path: '/embed-page-parent',
-    desc: 'Cesium自定义材质示例',
-    tags: ['Cesium', '材质', 'QuickStart']
+    desc: '使用postMessage实现跨域页面的数据通信',
+    tags: ['postMessage']
   },
   {
     title: '自定义材质',
