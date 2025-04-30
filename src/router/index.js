@@ -45,6 +45,11 @@ const routes = [
     name: 'EmbedPageParent',
     path: '/embed-page-parent',
     component: () => import('@/views/openlayers/EmbedPageParent.vue')
+  },
+  {
+    name: 'MeasureLength',
+    path: '/measure-length',
+    component: () => import('@/views/openlayers/MeasureLength.vue')
   }
 ]
 

@@ -130,12 +130,13 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import 'ol/ol.css'
 import { Map, View, Feature } from 'ol'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
+import { Style, Icon, Text, Fill } from 'ol/style'
 import { Point } from 'ol/geom'
-import { ref, onMounted } from 'vue'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 import { ElMessage } from 'element-plus'
@@ -143,7 +144,6 @@ import * as huanyu from 'huanyu'
 import imageBlue from '@/assets/images/locate-blue.png'
 import imageRed from '@/assets/images/locate-red.png'
 import imageGreen from '@/assets/images/locate-green.png'
-import { Style, Icon, Text, Fill } from 'ol/style'
 
 const center = [117.01533, 36.661184]
 let map = null

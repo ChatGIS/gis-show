@@ -22,6 +22,13 @@ const menus = [
     tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
+    title: '长度测量工具',
+    imgSrc: getHomeImg('measure-length.png'),
+    path: '/measure-length',
+    desc: '基于Haversine和Vincenty的大圆距离',
+    tags: ['OL']
+  },
+  {
     title: '地图颜色',
     imgSrc: getHomeImg('map-color.png'),
     path: '/map-color',
