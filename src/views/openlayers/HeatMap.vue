@@ -51,13 +51,12 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
 import 'ol/ol.css'
-import { Map, View } from 'ol'
+import { Map, View, Feature } from 'ol'
 import { Tile as TileLayer, Heatmap as HeatmapLayer } from 'ol/layer'
 import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
-import Feature from 'ol/Feature'
-import Point from 'ol/geom/Point'
-import { onMounted, ref } from 'vue'
+import { Point } from 'ol/geom'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 

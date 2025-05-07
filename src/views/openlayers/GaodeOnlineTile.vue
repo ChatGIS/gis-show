@@ -76,11 +76,11 @@
   </el-watermark>
 </template>
 <script setup>
+import { onMounted } from 'vue'
 import 'ol/ol.css'
 import { Map, View } from 'ol'
 import { Tile as TileLayer } from 'ol/layer'
 import { ImageTile as ImageTileSource } from 'ol/source'
-import { onMounted } from 'vue'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 

@@ -101,13 +101,13 @@
   </el-watermark>
 </template>
 <script setup>
+import { onMounted, ref, reactive } from 'vue'
 import 'ol/ol.css'
 import { Map, View } from 'ol'
 import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
 import { Draw, Modify, Snap } from 'ol/interaction'
 import { GeoJSON, WKT, EsriJSON, KML } from 'ol/format'
-import { onMounted, ref, reactive } from 'vue'
 // import { saveAs } from 'file-saver'
 import gcjMecator from '@/utils/gcj02ToWgs84.js'
 import * as huanyu from 'huanyu'

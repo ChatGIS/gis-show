@@ -41,9 +41,9 @@ import { Style, Stroke } from 'ol/style'
 import { LineString } from 'ol/geom'
 import { Draw } from 'ol/interaction'
 import { getLength } from 'ol/sphere'
+import * as huanyu from 'huanyu'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
-import * as huanyu from 'huanyu'
 
 const center = [117.01533, 36.661184]
 const map = ref(null)

@@ -26,8 +26,8 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus'
 import { ref, onMounted, onUnmounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 
