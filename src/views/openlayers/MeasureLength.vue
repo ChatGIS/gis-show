@@ -10,6 +10,15 @@
           长度说明：第一个值为基于Haversine公式，第二个值基于Vincenty公式，第二个值在长距离上更加准确，但是计算更复杂。
         </el-card>
         <el-card>
+          <el-button
+            class="clear-btn"
+            v-if="lines.length > 0"
+            size="small"
+            type="primary"
+            @click="clearMeasure"
+          >
+            清除所有测距
+          </el-button>
           <div v-for="(line, index) of lines" class="line-item">
             <div class="line-header">
               <span
@@ -40,13 +49,20 @@ import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
 import { Style, Stroke } from 'ol/style'
 import { LineString } from 'ol/geom'
 import { Draw } from 'ol/interaction'
-import { getLength } from 'ol/sphere'
 import * as huanyu from 'huanyu'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 
 const center = [117.01533, 36.661184]
+const lines = ref([])
+const sectionOriginDistances = []
+const sectionOriginDistancesPlus = []
 const map = ref(null)
+const baseLayer = new TileLayer({
+  source: new ImageTileSource({
+    url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
+  })
+})
 const drawSource = new VectorSource()
 const drawLayer = new VectorLayer({
   source: drawSource,
@@ -57,29 +73,12 @@ const drawLayer = new VectorLayer({
     })
   })
 })
-let draw = null
-let overlays = []
-let totalOverlay = null
-const lines = ref([])
-const sectionOriginDistances = []
-const sectionOriginDistancesPlus = []
-
-function clearOverlays() {
-  overlays.forEach((o) => map.value.removeOverlay(o))
-  overlays = []
-  if (totalOverlay) {
-    map.value.removeOverlay(totalOverlay)
-    totalOverlay = null
-  }
-}
-
+let drawInteraction = new Draw({
+  source: drawSource,
+  type: 'LineString',
+  style: null
+})
 onMounted(() => {
-  const baseLayer = new TileLayer({
-    source: new ImageTileSource({
-      url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
-    })
-  })
-
   map.value = new Map({
     target: 'map-container',
     layers: [baseLayer, drawLayer],
@@ -89,22 +88,15 @@ onMounted(() => {
       projection: 'EPSG:4326'
     })
   })
-
-  draw = new Draw({
-    source: drawSource,
-    type: 'LineString',
-    style: null
-  })
-
-  map.value.addInteraction(draw)
-
-  let sketch = null
-  let lastCoords = null
-
-  draw.on('drawstart', (evt) => {
-    clearOverlays()
-    sketch = evt.feature
-    lastCoords = null
+  map.value.addInteraction(drawInteraction)
+  handleDrawStart()
+  handleDrawEnd()
+})
+/**
+ * 开始绘制
+ */
+const handleDrawStart = () => {
+  drawInteraction.on('drawstart', (evt) => {
     const line = {
       total: 0,
       totalPlus: 0,
@@ -112,9 +104,8 @@ onMounted(() => {
       sectionsPlus: []
     }
     lines.value.push(line)
-    console.log('drawstart......')
     let lengthGeometryCoordinates = 2
-    sketch.getGeometry().on('change', (e) => {
+    evt.feature.getGeometry().on('change', (e) => {
       const geom = e.target
       const coords = geom.getCoordinates()
       if (coords.length == lengthGeometryCoordinates + 1) {
@@ -141,8 +132,12 @@ onMounted(() => {
       }
     })
   })
-
-  draw.on('drawend', (evt) => {
+}
+/**
+ * 结束绘制
+ */
+const handleDrawEnd = () => {
+  drawInteraction.on('drawend', (evt) => {
     setTotalDistance()
     const lastIndexLines = lines.value.length - 1
     const lineCoordinates = evt.feature.getGeometry().getCoordinates()
@@ -152,37 +147,54 @@ onMounted(() => {
     sectionOriginDistances.length = 0
     sectionOriginDistancesPlus.length = 0
   })
-})
-function formatLength(line) {
-  const length = getLength(line)
-  return length > 1000
-    ? (length / 1000).toFixed(2) + ' km'
-    : length.toFixed(2) + ' m'
 }
-function formatDistance(distance) {
+/**
+ * 清除测距内容
+ */
+const clearMeasure = () => {
+  sectionOriginDistances.length = 0
+  sectionOriginDistancesPlus.length = 0
+  lines.value.length = 0
+  drawSource.clear()
+  map.value.getOverlays().clear()
+}
+/**
+ * 格式化距离
+ * @param distance
+ * @returns
+ */
+const formatDistance = (distance) => {
   return distance > 1000
     ? (distance / 1000).toFixed(2) + ' km'
     : distance.toFixed(2) + ' m'
 }
-
-function createOverlay(text, position, type) {
-  const el = document.createElement('div')
-  el.className = 'measure-popup-item'
+/**
+ * 创建Overlay弹窗
+ * @param text 弹框文本内容
+ * @param position 弹框位置
+ * @param type 弹框类型
+ */
+const createOverlay = (text, position, type) => {
+  const ele = document.createElement('div')
+  ele.className = 'measure-popup-item'
   if (type == 1) {
-    el.className = 'measure-popup-item'
+    ele.className = 'measure-popup-item'
   } else if (type == 2) {
-    el.className = 'measure-total'
+    ele.className = 'measure-total'
   }
-  el.innerText = text
-  totalOverlay = new Overlay({
-    element: el,
+  ele.innerText = text
+  const overlay = new Overlay({
+    element: ele,
     positioning: 'top-right',
     stopEvent: false,
     offset: [0, 0],
     position: position
   })
-  map.value.addOverlay(totalOverlay)
+  map.value.addOverlay(overlay)
 }
+/**
+ * 计算总距离
+ */
 const setTotalDistance = () => {
   let totalDistance = 0
   let totalDistancePlus = 0
@@ -214,20 +226,6 @@ const setTotalDistance = () => {
   width: 100vw;
   height: 100vh;
 }
-.measure-popup {
-  background: #409eff;
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  margin-top: 8px;
-  pointer-events: none;
-}
-.measure-popup.total {
-  background: #67c23a;
-  font-weight: bold;
-}
 .distance-panel {
   position: fixed;
   top: 20px;
@@ -244,6 +242,9 @@ const setTotalDistance = () => {
   text-align: left;
   background-color: #dcdfe6;
   width: auto;
+}
+.clear-btn {
+  margin-bottom: 5px;
 }
 </style>
 <style>
