@@ -20,7 +20,7 @@
             清除所有测距
           </el-button>
           <div v-for="(line, index) of lines" class="line-item">
-            <div class="line-header">
+            <div class="line-header" :style="{ backgroundColor: line.color }">
               <span
                 >第{{ index + 1 }}条线：{{ line.total }} /
                 {{ line.totalPlus }}</span
@@ -65,13 +65,7 @@ const baseLayer = new TileLayer({
 })
 const drawSource = new VectorSource()
 const drawLayer = new VectorLayer({
-  source: drawSource,
-  style: new Style({
-    stroke: new Stroke({
-      color: 'blue',
-      width: 3
-    })
-  })
+  source: drawSource
 })
 let drawInteraction = new Draw({
   source: drawSource,
@@ -99,6 +93,7 @@ const handleDrawStart = () => {
   drawInteraction.on('drawstart', (evt) => {
     const line = {
       total: 0,
+      color: huanyu.getRandomColorFromTheme('logo'),
       totalPlus: 0,
       sections: [],
       sectionsPlus: []
@@ -126,7 +121,8 @@ const handleDrawStart = () => {
         createOverlay(
           lines.value[lastIndexLines].sections.length,
           sectionCenter,
-          1
+          1,
+          lines.value[lastIndexLines].color
         )
         setTotalDistance()
       }
@@ -140,10 +136,18 @@ const handleDrawEnd = () => {
   drawInteraction.on('drawend', (evt) => {
     setTotalDistance()
     const lastIndexLines = lines.value.length - 1
+    const color = lines.value[lastIndexLines].color
+    const style = new Style({
+      stroke: new Stroke({
+        color: color,
+        width: 5
+      })
+    })
+    evt.feature.setStyle(style)
     const lineCoordinates = evt.feature.getGeometry().getCoordinates()
     const lastCoordinate = lineCoordinates[lineCoordinates.length - 1]
     const text = `第${lines.value.length}条线总长：${lines.value[lastIndexLines].total}`
-    createOverlay(text, lastCoordinate, 2)
+    createOverlay(text, lastCoordinate, 2, lines.value[lastIndexLines].color)
     sectionOriginDistances.length = 0
     sectionOriginDistancesPlus.length = 0
   })
@@ -174,9 +178,9 @@ const formatDistance = (distance) => {
  * @param position 弹框位置
  * @param type 弹框类型
  */
-const createOverlay = (text, position, type) => {
+const createOverlay = (text, position, type, color) => {
   const ele = document.createElement('div')
-  ele.className = 'measure-popup-item'
+  ele.style = 'background-color: ' + color
   if (type == 1) {
     ele.className = 'measure-popup-item'
   } else if (type == 2) {
@@ -218,7 +222,7 @@ const setTotalDistance = () => {
   text-align: left;
 }
 .line-header {
-  background-color: var(--el-border-color);
+  color: white;
   border-radius: 5px;
   padding: 6px 8px;
 }
@@ -257,7 +261,6 @@ const setTotalDistance = () => {
 }
 .measure-total {
   width: auto;
-  background-color: red;
   height: 24px;
   border-radius: 4px;
   color: white;
