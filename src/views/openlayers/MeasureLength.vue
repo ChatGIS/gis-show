@@ -93,7 +93,7 @@ const handleDrawStart = () => {
   drawInteraction.on('drawstart', (evt) => {
     const line = {
       total: 0,
-      color: huanyu.getRandomColorFromTheme('logo'),
+      color: huanyu.getRandomColorFromTheme('brand'),
       totalPlus: 0,
       sections: [],
       sectionsPlus: []
