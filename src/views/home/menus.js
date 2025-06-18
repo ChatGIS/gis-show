@@ -15,18 +15,25 @@ const menus = [
     tags: ['OL', '坐标转换']
   },
   {
-    title: 'GIS数据类型',
-    imgSrc: getHomeImg('data-type.png'),
-    path: '/data-type',
-    desc: '绘制生成常用GIS数据类型',
-    tags: ['WKT', 'GeoJSON', 'GML']
-  },
-  {
     title: '长度测量工具',
     imgSrc: getHomeImg('measure-length.png'),
     path: '/measure-length',
     desc: '基于Haversine和Vincenty的大圆距离',
     tags: ['OL']
+  },
+  {
+    title: '地图基础参数',
+    imgSrc: getHomeImg('measure-length.png'),
+    path: '/map-param',
+    desc: '地图基础参数：层级、中心点、四至',
+    tags: ['OL']
+  },
+  {
+    title: 'GIS数据类型',
+    imgSrc: getHomeImg('data-type.png'),
+    path: '/data-type',
+    desc: '绘制生成常用GIS数据类型',
+    tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
     title: '地图颜色',

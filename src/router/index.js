@@ -50,6 +50,11 @@ const routes = [
     name: 'MeasureLength',
     path: '/measure-length',
     component: () => import('@/views/openlayers/MeasureLength.vue')
+  },
+  {
+    name: 'MapParam',
+    path: '/map-param',
+    component: () => import('@/views/openlayers/MapParam.vue')
   }
 ]
 
