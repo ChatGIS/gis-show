@@ -25,7 +25,7 @@
               v-model="mapParams.zoom"
               placeholder="层级"
             />
-            <el-button class="btn-copy" @click="copyCoordinates(mapParams.zoom)"
+            <el-button class="btn-copy" @click="copyContent(mapParams.zoom)"
               >复制</el-button
             >
           </el-form-item>
@@ -37,7 +37,7 @@
             />
             <el-button
               class="btn-copy"
-              @click="copyCoordinates(mapParams.center)"
+              @click="copyContent(mapParams.center)"
               >复制</el-button
             >
           </el-form-item>
@@ -49,7 +49,7 @@
             />
             <el-button
               class="btn-copy"
-              @click="copyCoordinates(mapParams.leftBottom)"
+              @click="copyContent(mapParams.leftBottom)"
               >复制</el-button
             >
           </el-form-item>
@@ -61,7 +61,7 @@
             />
             <el-button
               class="btn-copy"
-              @click="copyCoordinates(mapParams.rightTop)"
+              @click="copyContent(mapParams.rightTop)"
               >复制</el-button
             >
           </el-form-item>
@@ -74,13 +74,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import 'ol/ol.css'
-import { Map, View, Feature } from 'ol'
-import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer'
-import { ImageTile as ImageTileSource, Vector as VectorSource } from 'ol/source'
-import { Style, Icon, Text, Fill } from 'ol/style'
-import { Point } from 'ol/geom'
+import { Map, View } from 'ol'
+import { Tile as TileLayer } from 'ol/layer'
+import { ImageTile as ImageTileSource } from 'ol/source'
 import { ElMessage } from 'element-plus'
-import * as huanyu from 'huanyu'
 import SideNav from '@/components/SideNav.vue'
 import FooterInfo from '@/components/FooterInfo.vue'
 
@@ -114,22 +111,19 @@ onMounted(() => {
     const center = view.getCenter()
     const zoom = view.getZoom()
     const extent = view.calculateExtent()
-    const re = view.getResolution()
-    console.log(re, 'reeeeeeeeeeeeeee');
-    
     mapParams.value.center = `${center[0].toFixed(mapParams.value.coorDecimal)},${center[1].toFixed(mapParams.value.coorDecimal)}`
     mapParams.value.zoom = zoom.toFixed(mapParams.value.coorDecimal)
     mapParams.value.leftBottom = `${extent[0].toFixed(mapParams.value.coorDecimal)},${extent[1].toFixed(mapParams.value.coorDecimal)}`
     mapParams.value.rightTop = `${extent[2].toFixed(mapParams.value.coorDecimal)},${extent[3].toFixed(mapParams.value.coorDecimal)}`
   })
 })
-// 复制坐标到剪贴板
-const copyCoordinates = (coordinates) => {
+// 复制到剪贴板
+const copyContent = (coordinates) => {
   const text = Array.isArray(coordinates) ? coordinates.join(',') : coordinates
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      ElMessage.success('坐标已复制到剪贴板')
+      ElMessage.success('已复制到剪贴板')
     })
     .catch((err) => {
       ElMessage.error('复制失败')
