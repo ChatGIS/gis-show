@@ -23,7 +23,7 @@ const menus = [
   },
   {
     title: '地图基础参数',
-    imgSrc: getHomeImg('measure-length.png'),
+    imgSrc: getHomeImg('map-param.png'),
     path: '/map-param',
     desc: '地图基础参数：层级、中心点、四至',
     tags: ['OL']
