@@ -55,6 +55,11 @@ const routes = [
     name: 'MapParam',
     path: '/map-param',
     component: () => import('@/views/openlayers/MapParam.vue')
+  },
+  {
+    name: 'DataDisplay',
+    path: '/data-display',
+    component: () => import('@/views/openlayers/DataDisplay.vue')
   }
 ]
 

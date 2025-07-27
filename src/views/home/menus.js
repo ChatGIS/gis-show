@@ -29,10 +29,17 @@ const menus = [
     tags: ['OL']
   },
   {
-    title: 'GIS数据类型',
+    title: 'GIS数据输出',
     imgSrc: getHomeImg('data-type.png'),
     path: '/data-type',
     desc: '绘制生成常用GIS数据类型',
+    tags: ['WKT', 'GeoJSON', 'GML']
+  },
+  {
+    title: 'GIS数据输入呈现',
+    imgSrc: getHomeImg('data-type.png'),
+    path: '/data-display',
+    desc: '呈现点、线、面等各类GIS数据',
     tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
