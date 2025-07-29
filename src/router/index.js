@@ -60,6 +60,11 @@ const routes = [
     name: 'DataDisplay',
     path: '/data-display',
     component: () => import('@/views/openlayers/DataDisplay.vue')
+  },
+  {
+    name: 'SplitLine',
+    path: '/split-line',
+    component: () => import('@/views/openlayers/SplitLine.vue')
   }
 ]
 
