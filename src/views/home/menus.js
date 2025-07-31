@@ -36,8 +36,8 @@ const menus = [
     tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
-    title: 'GIS线分割工具',
-    imgSrc: getHomeImg('data-type.png'),
+    title: '线分割工具',
+    imgSrc: getHomeImg('split-line.png'),
     path: '/split-line',
     desc: '通过指定点对线进行分割',
     tags: ['OL']

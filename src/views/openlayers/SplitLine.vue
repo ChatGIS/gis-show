@@ -23,42 +23,47 @@
             <el-button type="primary" @click="loadLineFromWkt">加载</el-button>
             <el-button @click="clearLine">清除</el-button>
           </el-form-item>
+          <el-form-item label="坐标精度">
+                <el-input-number
+                  size="small"
+                  v-model="coorDecimal"
+                  :min="0"
+                  :max="14"
+                />
+              </el-form-item>
           <!-- 分割点输入 -->
-          <el-form-item label="预分割点">
+          <el-form-item label="近似分割点">
             <el-input
               v-model="pointInput"
-              placeholder="输入坐标或点击地图选择点"
+              placeholder="输入坐标（以空格或逗号分隔）或点击地图选择点"
               class="input-coordinate"
             />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="calculateSplitPoint"
+            <el-button type="primary" @click="calculateSplitPoint" class="btn-copy"
               >计算分割点</el-button
             >
           </el-form-item>
-          <!-- 最近点输出 -->
-          <el-form-item label="分割点">
-            <div class="input-group">
-              <el-input
-                v-model="pointSplit"
-                placeholder="分割点坐标"
-                class="input-coordinate"
-                readonly
-              />
-              <el-button
-                @click="copyContent(pointSplit)"
-                :disabled="!pointSplit"
-              >
-                复制
-              </el-button>
-            </div>
+          <!-- 分割点输出 -->
+          <el-form-item label="实际分割点">
+            <el-input
+              v-model="pointSplit"
+              placeholder="分割点坐标"
+              class="input-coordinate"
+              readonly
+            />
+            <el-button
+              @click="copyContent(pointSplit)"
+              :disabled="!pointSplit"
+              class="btn-copy"
+            >
+              复制分割点
+            </el-button>
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="splitLine" :disabled="!pointSplit"
               >分割线段</el-button
             >
           </el-form-item>
-          <el-form-item label="分割结果">
+          <el-form-item>
             <div class="split-result">
               <div v-if="splitResults.length > 0" class="split-wkt-container">
                 <div
@@ -69,13 +74,14 @@
                   <div class="split-wkt-label">线段 {{ index + 1 }}:</div>
                   <div class="split-wkt-content">
                     <el-input
-                      v-model="splitResults[index]"
+                      v-model="splitResults[index].wkt"
                       readonly
                       type="textarea"
                       :rows="5"
+                      :style="{ border: '1px solid' + result.color }"
                     />
                     <el-button
-                      @click="copyContent(splitResults[index])"
+                      @click="copyContent(splitResults[index].wkt)"
                       size="small"
                     >
                       复制
@@ -107,11 +113,12 @@ import FooterInfo from '@/components/FooterInfo.vue'
 import * as turf from '@turf/turf'
 
 const wktLine = ref(
-  'LINESTRING(116.99903 36.677847,116.983409 36.639138,117.031131 36.619482,117.043233 36.632443)'
+  'LINESTRING(117.000244 36.667624,117.004331 36.666948,117.000254 36.665135,117.00446 36.664405,117.000448 36.663161,117.0046 36.661991)'
 )
 const pointInput = ref('')
 const pointSplit = ref('')
 const splitResults = ref([])
+const coorDecimal = ref(6)
 const mapParams = reactive({
   center: [117.01533, 36.661184],
   zoom: 12
@@ -149,7 +156,7 @@ onMounted(() => {
   })
   map.on('click', function (evt) {
     const coordinate = evt.coordinate
-    pointInput.value = coordinate.join(', ')
+    pointInput.value = coordinate[0].toFixed(coorDecimal.value) + ', ' + coordinate[1].toFixed(coorDecimal.value)
     addSplitPoint(coordinate)
     calculateSplitPoint()
   })
@@ -163,16 +170,15 @@ const getStyle = (feature) => {
       return new Style({
         image: new Circle({
           radius: 6,
-          fill: new Fill({ color: 'rgba(255, 0, 0, 0.8)' }),
-          stroke: new Stroke({ color: '#ff0000', width: 2 })
+          fill: new Fill({ color: '#FF7E00' }),
         })
       })
     } else if (feature === nearestPointFeature) {
       return new Style({
         image: new Circle({
           radius: 6,
-          fill: new Fill({ color: 'rgba(0, 255, 0, 0.8)' }),
-          stroke: new Stroke({ color: '#00ff00', width: 2 })
+          fill: new Fill({ color: 'rgba(0, 0, 255, 0.8)' }),
+          stroke: new Stroke({ color: '#0000ff', width: 2 })
         })
       })
     }
@@ -186,14 +192,14 @@ const getStyle = (feature) => {
   } else if (feature === firstLineShow) {
     return new Style({
       stroke: new Stroke({
-        color: '#8760DC',
+        color: '#EA4335',
         width: 5
       })
     })
   } else if (feature === secondLineShow) {
     return new Style({
       stroke: new Stroke({
-        color: '#FF6666',
+        color: '#07C160',
         width: 5
       })
     })
@@ -329,7 +335,7 @@ const addSplitPoint = (coordinate) => {
   vectorSource.addFeature(splitPointFeature)
 }
 
-// 计算线上最近点
+// 计算线上分割点
 const calculateSplitPoint = () => {
   try {
     // 检查是否有线
@@ -337,36 +343,29 @@ const calculateSplitPoint = () => {
       ElMessage.warning('请先加载线数据')
       return
     }
-
     // 检查是否有分割点
     if (!pointInput.value) {
       ElMessage.warning('请输入或点击地图选择分割点')
       return
     }
-
     // 解析分割点坐标
     let coords = pointInput.value.split(/[,\s]+/).map(Number)
     if (coords.length < 2 || coords.some(isNaN)) {
       ElMessage.error('分割点坐标格式无效')
       return
     }
-
     // 获取线的坐标
     const lineGeom = lineFeature.getGeometry()
     const lineCoords = lineGeom.getCoordinates()
-
     // 转换为turf格式
     const line = turf.lineString(lineCoords)
     const point = turf.point(coords)
-
-    // 计算最近点
+    // 计算分割点
     const nearestPoint = turf.nearestPointOnLine(line, point)
     const nearestCoord = nearestPoint.geometry.coordinates
-
-    // 更新最近点坐标
-    pointSplit.value = nearestCoord.join(', ')
-
-    // 在地图上显示最近点
+    // 更新分割点坐标
+    pointSplit.value = nearestCoord[0].toFixed(coorDecimal.value) + ', ' + nearestCoord[1].toFixed(coorDecimal.value)
+    // 在地图上显示分割点
     if (nearestPointFeature) {
       vectorSource.removeFeature(nearestPointFeature)
     }
@@ -378,9 +377,9 @@ const calculateSplitPoint = () => {
     vectorSource.addFeature(nearestPointFeature)
     vectorSource.removeFeature(firstLineShow)
     vectorSource.removeFeature(secondLineShow)
-    ElMessage.success('已计算线上最近点')
+    ElMessage.success('已计算分割点')
   } catch (error) {
-    ElMessage.error('计算最近点失败: ' + error.message)
+    ElMessage.error('计算分割点失败: ' + error.message)
     console.error(error)
   }
 }
@@ -388,26 +387,21 @@ const calculateSplitPoint = () => {
 // 分割线
 const splitLine = () => {
   try {
-    // 检查是否有线和最近点
+    // 检查是否有线和分割点
     if (!lineFeature || !pointSplit.value) {
-      ElMessage.warning('请先加载线数据并计算最近点')
+      ElMessage.warning('请先加载线数据并计算分割点')
       return
     }
-
     // 获取线的坐标
     const lineGeom = lineFeature.getGeometry()
     const lineCoords = lineGeom.getCoordinates()
-
-    // 解析最近点坐标
+    // 解析分割点坐标
     const nearestCoord = pointSplit.value.split(/[,\s]+/).map(Number)
-
     // 转换为turf格式
     const line = turf.lineString(lineCoords)
     const point = turf.point(nearestCoord)
-
     // 计算分割点在线上的位置
     const nearestPoint = turf.nearestPointOnLine(line, point)
-
     // 分割线
     const sliceDistance = nearestPoint.properties.location
     const lineLength = turf.length(line)
@@ -430,8 +424,14 @@ const splitLine = () => {
     vectorSource.addFeature(secondLineShow)
     // 更新分割结果
     splitResults.value = [
-      wktFormat.writeFeature(firstLineFeature),
-      wktFormat.writeFeature(secondLineFeature)
+      {
+        color: '#EA4335',
+        wkt: wktFormat.writeFeature(firstLineFeature, {decimals: coorDecimal.value})
+      },
+      {
+        color: '#07C160',
+        wkt: wktFormat.writeFeature(secondLineFeature, {decimals: coorDecimal.value})
+      }
     ]
 
     ElMessage.success('线分割成功')
@@ -467,7 +467,6 @@ const clearLine = () => {
 // 复制到剪贴板
 const copyContent = (content) => {
   if (!content) return
-
   const text = Array.isArray(content) ? content.join(',') : content
   navigator.clipboard
     .writeText(text)
@@ -500,9 +499,7 @@ const copyContent = (content) => {
 }
 
 .split-result {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  width: 100%;
 }
 
 .split-wkt-container {
@@ -541,5 +538,8 @@ const copyContent = (content) => {
   word-break: break-all;
   display: inline-block;
   max-width: 300px;
+}
+.btn-copy {
+  margin-left: 5px;
 }
 </style>
