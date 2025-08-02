@@ -65,6 +65,11 @@ const routes = [
     name: 'SplitLine',
     path: '/split-line',
     component: () => import('@/views/openlayers/SplitLine.vue')
+  },
+  {
+    name: 'TextLabel',
+    path: '/text-label',
+    component: () => import('@/views/openlayers/TextLabel.vue')
   }
 ]
 

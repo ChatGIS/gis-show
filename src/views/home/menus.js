@@ -50,6 +50,13 @@ const menus = [
     tags: ['WKT', 'GeoJSON', 'GML']
   },
   {
+    title: '位置标注',
+    imgSrc: getHomeImg('text-label.png'),
+    path: '/text-label',
+    desc: '各种样式的位置标注',
+    tags: ['OL', '标注']
+  },
+  {
     title: '地图颜色',
     imgSrc: getHomeImg('map-color.png'),
     path: '/map-color',
